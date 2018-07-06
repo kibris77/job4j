@@ -8,7 +8,7 @@ import static org.junit.Assert.assertThat;
  *
  * @author Gorunov Alexandr (mailto:gorunov.sasha85@gmail.com)
  * @version $Id$
- * @since 0.1
+ * @since 0.1 sdfsdf
  */
 public class BoardTest {
     @Test
