@@ -1,5 +1,8 @@
 package ru.job4j.tictactoe;
 
+/**
+ * Реализует логику определения победителя.
+ */
 public class Logic3T {
     private final Figure3T[][] table;
 
@@ -7,71 +10,52 @@ public class Logic3T {
         this.table = table;
     }
 
+    /**
+     * Проверяет выграл ли игрок ставящий крестики.
+     * @return boolean
+     */
     public boolean isWinnerX() {
-        boolean result = false;
-        if (table[0][0].hasMarkX()) {
-            if (table[1][1].hasMarkX() && table[2][2].hasMarkX()) {
-                result = true;
-            }
-            if (table[1][0].hasMarkX() && table[2][0].hasMarkX()) {
-                result = true;
-            }
-        } else if (table[0][1].hasMarkX()) {
-            if (table[1][1].hasMarkX() && table[2][1].hasMarkX()) {
-                result = true;
-            }
-        } else if (table[0][2].hasMarkX()) {
-            if (table[1][1].hasMarkX() && table[2][0].hasMarkX()) {
-                result = true;
-            }
-            if (table[1][2].hasMarkX() && table[2][2].hasMarkX()) {
-                result = true;
-            }
-        } else if (table[1][0].hasMarkX()) {
-            if (table[1][1].hasMarkX() && table[1][2].hasMarkX()) {
-                result = true;
-            }
-        } else if (table[2][0].hasMarkX()) {
-            if (table[2][1].hasMarkX() && table[2][2].hasMarkX()) {
-                result = true;
+        boolean winner = false;
+        for (int i = 0; i < table.length; i++) {
+            if (checkXLine(i, 0, 0, 1)) {
+                winner = true;
+                break;
+            } else if (checkXLine(0, i, 1, 0)) {
+                winner = true;
+                break;
             }
         }
-
-        return result;
+        if (!winner) {
+            winner = (checkXLine(0, 0, 1, 1)) || checkXLine(2, 0, -1, 1);
+        }
+        return winner;
     }
 
+    /**
+     * Проверяет выиграл ли игрок ставящий нолики.
+     * @return boolean
+     */
     public boolean isWinnerO() {
-        boolean result = false;
-        if (table[0][0].hasMarkO()) {
-            if (table[1][1].hasMarkO() && table[2][2].hasMarkO()) {
-                result = true;
-            }
-            if (table[1][0].hasMarkO() && table[2][0].hasMarkO()) {
-                result = true;
-            }
-        } else if (table[0][1].hasMarkO()) {
-            if (table[1][1].hasMarkO() && table[2][1].hasMarkO()) {
-                result = true;
-            }
-        } else if (table[0][2].hasMarkO()) {
-            if (table[1][1].hasMarkO() && table[2][0].hasMarkO()) {
-                result = true;
-            }
-            if (table[1][2].hasMarkO() && table[2][2].hasMarkO()) {
-                result = true;
-            }
-        } else if (table[1][0].hasMarkO()) {
-            if (table[1][1].hasMarkO() && table[1][2].hasMarkO()) {
-                result = true;
-            }
-        } else if (table[2][0].hasMarkO()) {
-            if (table[2][1].hasMarkO() && table[2][2].hasMarkO()) {
-                result = true;
+        boolean winner = false;
+        for (int i = 0; i < table.length; i++) {
+            if (checkOLine(i, 0, 0, 1)) {
+                winner = true;
+                break;
+            } else if (checkOLine(0, i, 1, 0)) {
+                winner = true;
+                break;
             }
         }
-        return result;
+        if (!winner) {
+            winner = (checkOLine(0, 0, 1, 1)) || checkOLine(2, 0, -1, 1);
+        }
+        return winner;
     }
 
+    /**
+     * Проверяет ести ли пустая ячейка на поле.
+     * @return boolean
+     */
     public boolean hasGap() {
         boolean gap = false;
         for (int i = 0; i < table.length; i++) {
@@ -84,5 +68,41 @@ public class Logic3T {
         }
         return gap;
     }
-}
 
+    /**
+     * Проверяет заполнение линии крестиками.
+     * @param startX - начальная точка Х.
+     * @param startY - начальная точка Y.
+     * @param dX - направление приращения координат по X.
+     * @param dY - направление приращения координат по Y.
+     * @return boolean
+     */
+    private boolean checkXLine(int startX, int startY, int dX, int dY) {
+        boolean result = true;
+        for (int i = 0; i < table.length; i++) {
+            if (!table[startX + dX * i][startY + dY * i].hasMarkX()) {
+                result = false;
+                break;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Проверяет заполнение линии ноликами.
+     * @param startX - начальная точка Х.
+     * @param startY - начальная точка Y.
+     * @param dX - направление приращения координат по X.
+     * @param dY - направление приращения координат по Y.
+     * @return boolean
+     */    private boolean checkOLine(int startX, int startY, int dX, int dY) {
+        boolean result = true;
+        for (int i = 0; i < table.length; i++) {
+            if (!table[startX + dX * i][startY + dY * i].hasMarkO()) {
+                result = false;
+                break;
+            }
+        }
+        return result;
+    }
+}
