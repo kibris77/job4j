@@ -12,10 +12,10 @@ package ru.job4j.array;
      * @return перевернутый массив.
      */
     public int[] turn(int[] array) {
-        for (int i = 0; i < array.length / 2; i++) {
-            int temp = array[i];
-            array[i] = array[array.length - i - 1];
-            array[array.length - i - 1] = temp;
+        for (int index = 0; index < array.length / 2; index++) {
+            int temp = array[index];
+            array[index] = array[array.length - index - 1];
+            array[array.length - index - 1] = temp;
         }
         return array;
     }

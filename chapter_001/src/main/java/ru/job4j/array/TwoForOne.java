@@ -12,19 +12,19 @@ public class TwoForOne {
      */
     public static int[] merge(int[] fist, int[] second) {
         int[] result = new int[fist.length + second.length];
-        int i = 0, j = 0, k = 0;
-        while (i < fist.length && j < second.length) {
-            if (fist[i] < second[j]) {
-                result[k++] = fist[i++];
+        int fi = 0, si = 0, ri = 0;
+        while (fi < fist.length && si < second.length) {
+            if (fist[fi] < second[si]) {
+                result[ri++] = fist[fi++];
             } else {
-                result[k++] = second[j++];
+                result[ri++] = second[si++];
             }
         }
-        while (i < fist.length) {
-            result[k++] = fist[i++];
+        while (fi < fist.length) {
+            result[ri++] = fist[fi++];
         }
-        while (j < second.length) {
-            result[k++] = second[j++];
+        while (si < second.length) {
+            result[ri++] = second[si++];
         }
         return result;
     }

@@ -13,8 +13,8 @@ public class Factorial {
      */
     public int calc(int n) {
         int fact = 1;
-        for (int i = 1; i < n; i++) {
-            fact *= i;
+        for (int index = 1; index < n; index++) {
+            fact *= index;
         }
         return fact;
     }
