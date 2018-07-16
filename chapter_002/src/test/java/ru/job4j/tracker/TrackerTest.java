@@ -50,7 +50,7 @@ public class TrackerTest {
         tracker.addItem(item);
         Item item1 = new Item("test2", "testDescription2", 1234L);
         tracker.addItem(item1);
-        assertThat(tracker.findByName(item.getName()).getId(), is(item.getId()));
+        assertThat(tracker.findByName(item.getName())[0].getId(), is(item.getId()));
     }
     @Test
     public void whenFindAllThenReturnArray() {

@@ -9,7 +9,7 @@ package ru.job4j.tracker;
  * desc - описание заявки
  * 6 - выйти из трекера.
  */
-public class StubInput implements Input{
+public class StubInput implements Input {
     private final String[] value;
     private int position;
 

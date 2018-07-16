@@ -27,14 +27,17 @@ public class Tracker {
      * @param id - идентификатор заявки.
      * @param item - заявка.
      */
-    public void replace(String id, Item item) {
+    public boolean replace(String id, Item item) {
+        boolean result = false;
         for (int index = 0; index != position; index++) {
             if (items[index].getId().equals(id)) {
                 item.setId(id);
                 items[index] = item;
+                result = true;
                 break;
             }
         }
+        return result;
     }
 
     /**
@@ -58,15 +61,15 @@ public class Tracker {
      * @param name - имя заявки.
      * @return - заявка.
      */
-    public Item findByName(String name) {
-        Item result = null;
+    public Item[] findByName(String name) {
+        Item[] result = new Item[position];
+        int resIndex = 0;
         for (int index = 0; index != position; index++) {
             if (items[index].getName().equals(name)) {
-                result = items[index];
-                break;
+                result[resIndex++] = items[index];
             }
         }
-        return result;
+        return Arrays.copyOf(result, resIndex);
     }
 
     /**
@@ -85,14 +88,17 @@ public class Tracker {
      * Метод удаляет заявку по ID.
      * @param id - ID заявки.
      */
-    public void delete(String id) {
+    public boolean delete(String id) {
+        boolean result = false;
         for (int index = 0; index != position; index++) {
             if (items[index].getId().equals(id)) {
                 System.arraycopy(items, index + 1, items, index, position - index - 1);
                 position--;
+                result = true;
                 break;
             }
         }
+        return result;
     }
 
     /**

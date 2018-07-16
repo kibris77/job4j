@@ -1,5 +1,6 @@
 package ru.job4j.tracker;
 
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -37,4 +38,14 @@ public class Item {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append("------------ Заявка номер-").append(this.getId()).append(" --------------\n");
+        result.append("Имя: ").append(this.getName()).append("\n");
+        result.append("Описание: ").append(this.getDescription()).append("\n");
+        result.append("Дата: ").append(new Date(this.getCreate())).append("\n");
+        result.append("-------------------------------------------------------\n");
+        return result.toString();
+    }
 }
