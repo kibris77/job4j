@@ -27,7 +27,7 @@ public class StartUI {
     /**
      * Инициазиция данных программы.
      */
-    private void init() {
+    protected void init() {
         boolean exit = true;
         while (exit) {
             this.showMenu();
