@@ -11,11 +11,16 @@ public class Square implements Shape {
     @Override
     public String draw() {
         StringBuilder result = new StringBuilder();
-        result.append("*****\n");
-        result.append("*   *\n");
-        result.append("*   *\n");
-        result.append("*   *\n");
         result.append("*****");
+        result.append(System.lineSeparator());
+        result.append("*   *");
+        result.append(System.lineSeparator());
+        result.append("*   *");
+        result.append(System.lineSeparator());
+        result.append("*   *");
+        result.append(System.lineSeparator());
+        result.append("*****");
+        result.append(System.lineSeparator());
         return result.toString();
     }
 }

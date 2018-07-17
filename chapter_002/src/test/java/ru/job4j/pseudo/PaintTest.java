@@ -30,19 +30,21 @@ public class PaintTest {
     public void whenDrawTriangle() {
         new Paint().draw(new Triangle());
         assertThat(new String(outStream.toByteArray()), is(new StringBuilder()
-                .append("  *  \n")
-                .append(" *** \n")
-                .append("*****\n").toString()));
+                .append("  *  ").append(System.lineSeparator())
+                .append(" *** ").append(System.lineSeparator())
+                .append("*****").append(System.lineSeparator())
+                .append(System.lineSeparator()).toString()));
     }
 
     @Test
     public void whenDrawSquare() {
         new Paint().draw(new Square());
         assertThat(new String(outStream.toByteArray()), is(new StringBuilder()
-                .append("*****\n")
-                .append("*   *\n")
-                .append("*   *\n")
-                .append("*   *\n")
-                .append("*****\n").toString()));
+                .append("*****").append(System.lineSeparator())
+                .append("*   *").append(System.lineSeparator())
+                .append("*   *").append(System.lineSeparator())
+                .append("*   *").append(System.lineSeparator())
+                .append("*****").append(System.lineSeparator())
+                .append(System.lineSeparator()).toString()));
     }
 }
