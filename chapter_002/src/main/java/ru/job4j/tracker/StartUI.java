@@ -11,8 +11,8 @@ public class StartUI {
     private static final String FINDNAME = "5";
     private static final String EXIT = "6";
 
-    private final Tracker tracker;
-    private final Input input;
+    private Tracker tracker;
+    private Input input;
 
     public StartUI(Tracker tracker, Input input) {
         this.tracker = tracker;
@@ -28,29 +28,14 @@ public class StartUI {
      * Инициазиция данных программы.
      */
     protected void init() {
-        boolean exit = true;
-        while (exit) {
-            this.showMenu();
-            String answer = this.input.ask("Введите номер пункта меню:");
-            if (ADD.equals(answer)) {
-                this.createItem();
-            } else if (SHOW.equals(answer)) {
-                showAllItems();
-            } else if (EDIT.equals(answer)) {
-                editItem();
-            } else if (DELETE.equals(answer)) {
-                deleteItem();
-            } else if (FINDID.equals(answer)) {
-                findItemId();
-            } else if (FINDNAME.equals(answer)) {
-                findItemName();
-            } else if (EXIT.equals(answer)) {
-                exit = false;
-            } else {
-                System.out.println("Вы ввели не существующий номер!");
-                System.out.println("-------------------------------");
-            }
-        }
+        MenuTracker menu = new MenuTracker(this.input, this.tracker);
+        menu.fillActions();
+        String answer = null;
+        do {
+            menu.show();
+            answer = input.ask("Выберете пункт меню.");
+            menu.select(Integer.valueOf(answer));
+        } while (!answer.equals("6"));
     }
 
     /**
