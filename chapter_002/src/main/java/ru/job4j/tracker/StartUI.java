@@ -32,112 +32,11 @@ public class StartUI {
         menu.fillActions();
         String answer = null;
         do {
+            System.out.println("MENU");
             menu.show();
-            answer = input.ask("Выберете пункт меню.");
+            System.out.println("6. Exit Program");
+            answer = input.ask("Выберите пункт меню.");
             menu.select(Integer.valueOf(answer));
         } while (!answer.equals("6"));
-    }
-
-    /**
-     * Метод отображает пункты меню.
-     */
-    private void showMenu() {
-        String[] menu = new String[]{"MENU",
-                                    "0. Add new Item",
-                                    "1. Show all items",
-                                    "2. Edit item",
-                                    "3. Delete item",
-                                    "4. Find item by Id",
-                                    "5. Find items by name",
-                                    "6. Exit Program"};
-        for (int index = 0; index < menu.length; index++) {
-            System.out.println(menu[index]);
-        }
-    }
-
-    /**
-     * Метод добавляет заявку к хранилищу.
-     */
-    private void createItem() {
-        System.out.println("------------ Добавление новой заявки --------------");
-        String name = this.input.ask("Введите имя заявки :");
-        String desc = this.input.ask("Введите описание заявки :");
-        Item item = new Item(name, desc, System.currentTimeMillis());
-        this.tracker.addItem(item);
-        System.out.println("------------ Новая заявка с getId : " + item.getId() + "-----------");
-    }
-
-    /**
-     * Метод отображает все заявки.
-     */
-    private void showAllItems() {
-        Item[] items = tracker.findAll();
-        if (items != null) {
-            for (Item item : items) {
-                System.out.println(item);
-            }
-        } else {
-            System.out.println("Нет текущих заявок.");
-            System.out.println("---------------------------------------------------");
-        }
-    }
-
-    /**
-     * Метод редактирует заявку.
-     */
-    private void editItem() {
-        System.out.println("------------ Редактирование заявки --------------");
-        String id = this.input.ask("Введите номер заявки :");
-        String name = this.input.ask("Введите имя заявки :");
-        String desc = this.input.ask("Введите описание заявки :");
-        Item item = new Item(name, desc, System.currentTimeMillis());
-        if (this.tracker.replace(id, item)) {
-            System.out.println("-------- Отредактирована заявка с getId : " + id + "-----------");
-        } else {
-            System.out.println("------------ Ззаявка с getId : " + id + " не найдена-----------");
-        }
-    }
-
-    /**
-     * Метод удаляет заявку.
-     */
-    private void deleteItem() {
-        System.out.println("------------ Удаление заявки --------------");
-        String id = this.input.ask("Введите номер заявки :");
-        if (this.tracker.delete(id)) {
-            System.out.println("------------ Заявка с getId : " + id + " удалена-----------");
-        } else {
-            System.out.println("------------ Ззаявка с getId : " + id + " не найдена-----------");
-        }
-    }
-
-    /**
-     * Метод находит заявку по id.
-     */
-    private void findItemId() {
-        System.out.println("---------- Поиск заявки по ID ----------");
-        String id = this.input.ask("Введите номер заявки :");
-        Item item = tracker.findById(id);
-        if (item != null) {
-            System.out.println(item);
-        } else {
-            System.out.println("------------ Ззаявка с getId : " + id + " не найдена-----------");
-        }
-    }
-
-    /**
-     * Метод находит заявку по имени.
-     */
-    private void findItemName() {
-        System.out.println("---------- Поиск заявки по имени ----------");
-        String name = this.input.ask("Введите имя заявки :");
-        Item[] items = tracker.findByName(name);
-        if (items.length > 0) {
-            for (Item item : items) {
-                System.out.println(item);
-            }
-        } else {
-            System.out.println("------------ Ззаявка с getName : " + name + " не найдена-----------");
-        }
     }
 }

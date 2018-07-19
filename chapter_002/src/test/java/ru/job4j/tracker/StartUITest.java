@@ -76,7 +76,7 @@ public class StartUITest {
     }
 
     @Test
-    public void whenFindItemId(){
+    public void whenFindItemId() {
         Tracker tracker = new Tracker();
         Item item = tracker.addItem(new Item("test name", "desc", System.currentTimeMillis()));
         Input input = new StubInput(new String[]{"4", item.getId(), "6"});
@@ -93,7 +93,7 @@ public class StartUITest {
     }
 
     @Test
-    public void whenFindItemName(){
+    public void whenFindItemName() {
         Tracker tracker = new Tracker();
         Item item = tracker.addItem(new Item("test name", "desc", System.currentTimeMillis()));
         Input input = new StubInput(new String[]{"5", item.getName(), "6"});
