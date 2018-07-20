@@ -23,6 +23,7 @@ public class MenuTracker {
         actions[3] = new DeleteItem();
         actions[4] = new FindItemId();
         actions[5] = new FindItemName();
+        actions[6] = new ExitProgram();
     }
 
     /**
@@ -178,6 +179,21 @@ public class MenuTracker {
         @Override
         public String info() {
             return String.format("%s. %s", this.key(), "Find items by name");
+        }
+    }
+
+    private class ExitProgram implements UserAction {
+        @Override
+        public int key() {
+            return 6;
+        }
+        @Override
+        public void execute(Input input, Tracker tracker) {
+        }
+
+        @Override
+        public String info() {
+            return String.format("%s. %s", this.key(), "Exit Program");
         }
     }
 
