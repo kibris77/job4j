@@ -14,22 +14,20 @@ public class ConsoleInput implements Input {
     @Override
     public int ask(String question, int[] range) {
         String answer = ask(question);
-        if (answer.matches("[0-9]+")) {
-            int key = Integer.valueOf(answer);
-            boolean contains = false;
-            for (int element : range) {
-                if (key == element) {
-                    contains = true;
-                    break;
-                }
-            }
-            if (contains) {
-                return key;
-            } else {
-                throw new MenuOutExeption("Вы ввели несуществующий номер пункта меню.");
-            }
-        } else {
+        boolean contains = false;
+        if (!answer.matches("[0-9]+")) {
             throw new WrongInputExeption("Неправильный ввод. Вы ввели не число.");
         }
+        int key = Integer.valueOf(answer);
+        for (int element : range) {
+            if (key == element) {
+                contains = true;
+                break;
+            }
+        }
+        if (!contains) {
+            throw new MenuOutExeption("Вы ввели несуществующий номер пункта меню.");
+        }
+        return key;
     }
 }
