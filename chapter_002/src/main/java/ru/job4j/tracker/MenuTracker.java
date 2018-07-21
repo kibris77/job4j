@@ -27,6 +27,18 @@ public class MenuTracker {
     }
 
     /**
+     * Возвращает номера пунктов меню.
+     * @return массив номеров.
+     */
+    public int[] getMenuNumbers() {
+        int[] menuNumers = new int[actions.length];
+        for (int index = 0; index < menuNumers.length; index++) {
+            menuNumers[index] = actions[index].key();
+        }
+        return menuNumers;
+    }
+
+    /**
      * Показать информацию о событии.
      */
     public void show() {

@@ -5,6 +5,7 @@ import java.util.Date;
 public class StartUI {
     private Tracker tracker;
     private Input input;
+    private int[] range;
 
     public StartUI(Tracker tracker, Input input) {
         this.tracker = tracker;
@@ -12,7 +13,7 @@ public class StartUI {
     }
 
     public static void main(String[] args) {
-        new StartUI(new Tracker(), new ConsoleInput()).init();
+        new StartUI(new Tracker(), new ValidateInput()).init();
 
     }
 
@@ -22,12 +23,13 @@ public class StartUI {
     protected void init() {
         MenuTracker menu = new MenuTracker(this.input, this.tracker);
         menu.fillActions();
-        String answer = null;
+        range = menu.getMenuNumbers();
+        int answer = -1;
         do {
             System.out.println("MENU");
             menu.show();
-            answer = input.ask("Выберите пункт меню.");
-            menu.select(Integer.valueOf(answer));
-        } while (!answer.equals("6"));
+            answer = input.ask("Выберите пункт меню.", range);
+            menu.select(answer);
+        } while (!(answer == 6));
     }
 }
