@@ -3,7 +3,18 @@ package ru.job4j.tracker;
 /**
  * Класс проверяет данные которые ввел пользователь.
  */
-public class ValidateInput extends ConsoleInput {
+public class ValidateInput implements Input {
+    private final Input input;
+
+    public ValidateInput(Input input) {
+        this.input = input;
+    }
+
+    @Override
+    public String ask(String question) {
+        return this.input.ask(question);
+    }
+
     /**
      * Метод просит ввестипользователя данные.
      * @param question - текст запроса.
@@ -16,7 +27,7 @@ public class ValidateInput extends ConsoleInput {
         int key = -1;
         do {
             try {
-                key = super.ask(question, range);
+                key = this.input.ask(question, range);
                 invalid = false;
             } catch (WrongInputExeption ew) {
                 System.out.println(ew.getMessage());
