@@ -17,14 +17,14 @@ public class MenuTracker {
     /**
      * Регистрация событий пунктов меню.
      */
-    public void fillActions() {
+    public void fillActions(StartUI startUI) {
         actions[position++] = new AddItem(0, "Add new Item");
         actions[position++] = new ShowAllItems(1, "Show all items");
         actions[position++] = new EditItem(2, "Edit item");
         actions[position++] = new DeleteItem(3, "Delete item");
         actions[position++] = new FindItemId(4, "Find item by Id");
         actions[position++] = new FindItemName(5, "Find items by name");
-        actions[position++] = new ExitProgram(6, "Exit Program");
+        actions[position++] = new ExitProgram(6, "Exit Program", startUI);
     }
 
     /**
@@ -167,13 +167,15 @@ public class MenuTracker {
     }
 
     private class ExitProgram extends BaseAction {
-        public ExitProgram(int key, String name) {
+        private StartUI startUI;
+        public ExitProgram(int key, String name, StartUI startUI) {
             super(key, name);
+            this.startUI = startUI;
         }
 
         @Override
         public void execute(Input input, Tracker tracker) {
-            throw new UnsupportedOperationException();
+            startUI.stop();
         }
     }
 }

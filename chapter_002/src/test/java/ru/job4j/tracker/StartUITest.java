@@ -88,7 +88,6 @@ public class StartUITest {
                 .append("Описание: ").append(item.getDescription()).append(separator)
                 .append("Дата: ").append(new Date(item.getCreate())).append(separator)
                 .append("-------------------------------------------------------").append(separator).append(separator)
-                .append(menu)
                 .toString()));
     }
 
@@ -105,7 +104,6 @@ public class StartUITest {
                 .append("Описание: ").append(item.getDescription()).append(separator)
                 .append("Дата: ").append(new Date(item.getCreate())).append(separator)
                 .append("-------------------------------------------------------").append(separator).append(separator)
-                .append(menu)
                 .toString()));
     }
 
