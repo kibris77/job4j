@@ -15,7 +15,7 @@ import static org.junit.Assert.assertThat;
 public class StartUITest {
     private final PrintStream stdout = System.out;
     private final ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-    private final String separator = System.lineSeparator();
+    private final String separator = System.getProperty("line.separator");
     private final String menu = new StringBuilder()
             .append("MENU").append(separator)
             .append("0. Add new Item").append(separator)

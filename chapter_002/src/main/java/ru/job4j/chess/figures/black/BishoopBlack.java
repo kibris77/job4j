@@ -23,8 +23,7 @@ public class BishoopBlack extends Figure {
 
     public double isDiagonal(Cell source, Cell dest) {
         //boolean result = false;
-        double arcTg = Math.atan((dest.y - source.y)/(dest.x - source.x));
-        double angle = arcTg*180/3.14;
+        double angle = Math.atan((dest.y - source.y)/(dest.x - source.x)) * 180 / Math.PI;
         if ((angle > 44 && angle < 46)) {
 
         }
