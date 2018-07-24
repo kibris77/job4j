@@ -55,9 +55,7 @@ public class MenuTracker {
      * @param key - индекс пунта меню.
      */
     public void select(int key) {
-        if (key < 6) {
-            this.actions[key].execute(this.input, this.tracker);
-        }
+        this.actions[key].execute(this.input, this.tracker);
     }
 
     /**

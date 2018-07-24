@@ -1,4 +1,7 @@
 package ru.job4j.chess.exeptions;
 
-public class FigureNotFoundException extends Exception{
+/**
+ * Исключение когда фигуры нет на клетке.
+ */
+public class FigureNotFoundException extends Exception {
 }

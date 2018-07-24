@@ -93,6 +93,7 @@ public class Tracker {
         for (int index = 0; index != position; index++) {
             if (items[index].getId().equals(id)) {
                 System.arraycopy(items, index + 1, items, index, position - index - 1);
+                Arrays.fill(items, position - 1, items.length - position, null);
                 position--;
                 result = true;
                 break;

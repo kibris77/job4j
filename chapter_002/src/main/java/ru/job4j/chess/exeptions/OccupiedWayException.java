@@ -1,4 +1,7 @@
 package ru.job4j.chess.exeptions;
 
-public class OccupiedWayException extends Exception{
+/**
+ * Исключение когда на пути фигуры есть другие фигуры.
+ */
+public class OccupiedWayException extends Exception {
 }

@@ -1,4 +1,7 @@
 package ru.job4j.chess.exeptions;
 
-public class ImposibleMoveException extends Exception{
+/**
+ * Исключение когда нельзя переместить фигуру в нужную точку.
+ */
+public class ImposibleMoveException extends Exception {
 }
