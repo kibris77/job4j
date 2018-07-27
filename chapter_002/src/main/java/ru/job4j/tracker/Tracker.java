@@ -92,8 +92,7 @@ public class Tracker {
         boolean result = false;
         for (int index = 0; index != position; index++) {
             if (items[index].getId().equals(id)) {
-                System.arraycopy(items, index + 1, items, index, position - index - 1);
-                Arrays.fill(items, position - 1, items.length - position, null);
+                System.arraycopy(items, index + 1, items, index, this.items.length - index - 1);
                 position--;
                 result = true;
                 break;
@@ -106,7 +105,7 @@ public class Tracker {
      * Метод генерирует уникальный ключ.
      * @return - уникальный ID завки.
      */
-    String generateId() {
+    private String generateId() {
         return String.valueOf(System.currentTimeMillis() + RN.nextInt());
     }
 }
