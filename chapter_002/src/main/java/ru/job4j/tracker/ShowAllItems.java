@@ -1,5 +1,7 @@
 package ru.job4j.tracker;
 
+import java.util.List;
+
 public class ShowAllItems extends BaseAction {
     public ShowAllItems(int key, String name) {
         super(key, name);
@@ -7,8 +9,8 @@ public class ShowAllItems extends BaseAction {
 
     @Override
     public void execute(Input input, Tracker tracker) {
-        Item[] items = tracker.findAll();
-        if (items != null) {
+        List<Item> items = tracker.findAll();
+        if (!items.isEmpty()) {
             for (Item item : items) {
                 System.out.println(item);
             }

@@ -46,7 +46,7 @@ public class StartUITest {
         Tracker tracker = new Tracker();
         StartUI startUI = new StartUI(tracker, input);
         startUI.init();
-        assertThat(tracker.findAll()[0].getName(), is("Ne Rabotaet"));
+        assertThat(tracker.findAll().get(0).getName(), is("Ne Rabotaet"));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class StartUITest {
         Item[] items = new Item[]{item};
         Input input = new StubInput(new String[]{"3", item1.getId(), "6"});
         new StartUI(tracker, input).init();
-        assertThat(tracker.findAll(), is(items));
+        assertThat(tracker.findAll().toArray(new Item[0]), is(items));
     }
 
     @Test
@@ -88,7 +88,7 @@ public class StartUITest {
                 .append("Описание: ").append(item.getDescription()).append(separator)
                 .append("Дата: ").append(new Date(item.getCreate())).append(separator)
                 .append("-------------------------------------------------------").append(separator).append(separator)
-                .toString()));
+                .append(menu).toString()));
     }
 
     @Test
@@ -104,7 +104,7 @@ public class StartUITest {
                 .append("Описание: ").append(item.getDescription()).append(separator)
                 .append("Дата: ").append(new Date(item.getCreate())).append(separator)
                 .append("-------------------------------------------------------").append(separator).append(separator)
-                .toString()));
+                .append(menu).toString()));
     }
 
 

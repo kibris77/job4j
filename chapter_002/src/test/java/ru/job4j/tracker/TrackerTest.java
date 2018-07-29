@@ -14,7 +14,7 @@ public class TrackerTest {
         Item item1 = new Item("test1", "test1desc]", 131L);
         tracker.addItem(item);
         tracker.addItem(item1);
-        assertThat(tracker.findAll()[1], is(item1));
+        assertThat(tracker.findAll().get(1), is(item1));
     }
 
     @Test
@@ -50,7 +50,7 @@ public class TrackerTest {
         tracker.addItem(item);
         Item item1 = new Item("test2", "testDescription2", 1234L);
         tracker.addItem(item1);
-        assertThat(tracker.findByName(item.getName())[0].getId(), is(item.getId()));
+        assertThat(tracker.findByName(item.getName()).get(0).getId(), is(item.getId()));
     }
     @Test
     public void whenFindAllThenReturnArray() {
@@ -60,7 +60,7 @@ public class TrackerTest {
         Item item1 = new Item("test2", "testDescription2", 1234L);
         tracker.addItem(item1);
         Item[] expected = new Item[] {item, item1};
-        Item[] result = tracker.findAll();
+        Item[] result = tracker.findAll().toArray(new Item[0]);
         assertThat(result, is(expected));
     }
 
@@ -77,10 +77,10 @@ public class TrackerTest {
         tracker.addItem(item3);
         Item[] expected = new Item[] {item1, item2, item3};
         tracker.delete(item.getId());
-        Item[] result = tracker.findAll();
+        Item[] result = tracker.findAll().toArray(new Item[0]);
         assertThat(result, is(expected));
         tracker.delete(item2.getId());
-        result = tracker.findAll();
+        result = tracker.findAll().toArray(new Item[0]);
         expected = new Item[]{item1, item3};
         assertThat(result, is(expected));
     }

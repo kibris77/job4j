@@ -31,7 +31,7 @@ public class StartUI {
             menu.show();
             answer = input.ask("Выберите пункт меню.", range);
             menu.select(answer);
-        } while (stopProgram);
+        } while (!stopProgram);
     }
 
     /**
