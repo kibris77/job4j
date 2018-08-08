@@ -38,6 +38,9 @@ public class IteratorOfIterators {
                         throw  new NoSuchElementException();
                     }
                     temp = it.next();
+                    if (!temp.hasNext()) {
+                        throw new NoSuchElementException();
+                    }
                     result = temp.next();
                 }
                 return result;
