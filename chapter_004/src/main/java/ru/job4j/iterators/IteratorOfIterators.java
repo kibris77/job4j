@@ -12,14 +12,16 @@ public class IteratorOfIterators {
 
             @Override
             public boolean hasNext() {
-                boolean result;
+                boolean result = false;
                 if (temp.hasNext()) {
                     result = true;
                 } else {
-                    if (it.hasNext()) {
+                    while (it.hasNext()) {
                         temp = it.next();
+                        if(result = temp.hasNext()){
+                            break;
+                        }
                     }
-                    result = temp.hasNext();
                 }
                 return result;
             }
