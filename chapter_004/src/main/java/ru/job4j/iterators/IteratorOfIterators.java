@@ -1,6 +1,7 @@
 package ru.job4j.iterators;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Класс конвертирует итератор итераторов в один итератор.
@@ -33,6 +34,9 @@ public class IteratorOfIterators {
                 if (temp.hasNext()) {
                     result = temp.next();
                 } else {
+                    if (!it.hasNext()) {
+                        throw  new NoSuchElementException();
+                    }
                     temp = it.next();
                     result = temp.next();
                 }
