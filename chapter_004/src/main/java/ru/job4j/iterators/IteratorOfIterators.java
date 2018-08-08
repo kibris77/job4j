@@ -18,7 +18,8 @@ public class IteratorOfIterators {
                 } else {
                     while (it.hasNext()) {
                         temp = it.next();
-                        if(result = temp.hasNext()){
+                        result = temp.hasNext();
+                        if (result) {
                             break;
                         }
                     }
