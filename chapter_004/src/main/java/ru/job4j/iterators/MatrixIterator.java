@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 /**
  * Итератор для двумерного массива.
  */
-public class MatrixIterator implements Iterator {
+public class MatrixIterator implements Iterator<Integer> {
     private int[][] matrix;
     private int outIndex = 0;
     private int inIndex = 0;
@@ -21,17 +21,14 @@ public class MatrixIterator implements Iterator {
     }
 
     @Override
-    public Object next() {
-        Object result = null;
-        if (matrix.length > 0) {
-            result = matrix[outIndex][inIndex++];
-            if (inIndex == matrix[outIndex].length) {
+    public Integer next() {
+        if (!hasNext()) {
+            throw new NoSuchElementException();
+        }
+        Integer result = matrix[outIndex][inIndex++];
+        if (inIndex == matrix[outIndex].length) {
                 inIndex = 0;
                 outIndex++;
-            }
-        }
-        if (result == null) {
-            throw new NoSuchElementException();
         }
         return result;
     }
