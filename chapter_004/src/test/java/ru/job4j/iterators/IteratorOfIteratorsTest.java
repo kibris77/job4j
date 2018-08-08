@@ -79,11 +79,11 @@ public class IteratorOfIteratorsTest {
     public void hasNextShouldReturnFalseInCaseOfEmptyIterators() {
         Iterator<Integer> it1 = (new ArrayList<Integer>()).iterator();
         Iterator<Integer> it2 = (new ArrayList<Integer>()).iterator();
-        Iterator<Integer> it3 = (new ArrayList<Integer>()).iterator();
+        Iterator<Integer> it3 = (Arrays.asList(1, 2, 3)).iterator();
         Iterator<Iterator<Integer>> its = Arrays.asList(it1, it2, it3).iterator();
         IteratorOfIterators iteratorOfIterators = new IteratorOfIterators();
         it = iteratorOfIterators.convert(its);
-        assertThat(it.hasNext(), is(false));
+        assertThat(it.hasNext(), is(true));
     }
 
     @Test(expected = NoSuchElementException.class)
