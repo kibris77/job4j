@@ -2,6 +2,7 @@ package ru.job4j.generic;
 
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Класс обертка для массива.
@@ -28,9 +29,7 @@ public class SimpleArray<T> implements Iterable<T> {
      * @param model - значенние элемента.
      */
     public void set(int index, T model) {
-        if (index > this.index - 1) {
-            throw new UnsupportedOperationException();
-        }
+        checkIndex(index);
         array[index] = model;
     }
 
@@ -39,9 +38,7 @@ public class SimpleArray<T> implements Iterable<T> {
      * @param index - индес элемнета.
      */
     public void delete(int index) {
-        if (index > this.index - 1) {
-            throw new UnsupportedOperationException();
-        }
+        checkIndex(index);
         System.arraycopy(array, index + 1, array, index, this.array.length - index - 1);
         this.index--;
     }
@@ -52,10 +49,18 @@ public class SimpleArray<T> implements Iterable<T> {
      * @return - значение элемента.
      */
     public T get(int index) {
-        if (index > this.index - 1) {
+        checkIndex(index);
+        return (T) array[index];
+    }
+
+    /**
+     * Метод проверяет допустимость индекса.
+     * @param index - индекс.
+     */
+    private void checkIndex(int index) {
+        if (index > (this.index - 1)) {
             throw new UnsupportedOperationException();
         }
-        return (T) array[index];
     }
 
     /**
@@ -79,6 +84,9 @@ public class SimpleArray<T> implements Iterable<T> {
 
         @Override
         public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
             return (T) array[innerIndex++];
         }
     }
