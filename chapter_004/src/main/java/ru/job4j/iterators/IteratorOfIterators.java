@@ -30,20 +30,10 @@ public class IteratorOfIterators {
 
             @Override
             public Integer next() {
-                int result;
-                if (temp.hasNext()) {
-                    result = temp.next();
-                } else {
-                    if (!it.hasNext()) {
-                        throw  new NoSuchElementException();
-                    }
-                    temp = it.next();
-                    if (!temp.hasNext()) {
-                        throw new NoSuchElementException();
-                    }
-                    result = temp.next();
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
                 }
-                return result;
+                return temp.next();
             }
         };
     }
