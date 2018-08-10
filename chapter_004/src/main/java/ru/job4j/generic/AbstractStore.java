@@ -77,9 +77,6 @@ public class AbstractStore<T extends Base> implements Store<T> {
                 break;
             }
         }
-        if (result == null) {
-            throw  new NoSuchElementException();
-        }
         return result;
     }
 }

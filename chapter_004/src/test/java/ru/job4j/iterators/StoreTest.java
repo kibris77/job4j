@@ -42,7 +42,7 @@ public class StoreTest {
         assertThat(role.delete("2"), is(false));
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test(expected = NullPointerException.class)
     public void whenFi2Then4() {
         assertThat(user.findById("2").getId(), is("2"));
         assertThat(role.findById("2").getId(), is("2"));
