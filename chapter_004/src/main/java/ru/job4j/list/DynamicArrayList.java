@@ -31,7 +31,7 @@ public class DynamicArrayList<E> implements SimpleContainer<E>, Iterable<E> {
      */
     @Override
     public E get(int index) {
-        chechIndex();
+        chechIndex(index);
         return (E) array[index];
     }
 
@@ -57,8 +57,8 @@ public class DynamicArrayList<E> implements SimpleContainer<E>, Iterable<E> {
     /**
      * Метод проверяет попадние индекса в границы коллекции.
      */
-    private void chechIndex() {
-        if (index < 0 && index > this.index - 1) {
+    private void chechIndex(int ind) {
+        if (ind < 0 || ind > this.index - 1) {
             throw new ArrayIndexOutOfBoundsException();
         }
     }
