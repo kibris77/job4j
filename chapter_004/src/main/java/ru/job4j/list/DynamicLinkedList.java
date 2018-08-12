@@ -9,10 +9,10 @@ import java.util.NoSuchElementException;
  * @param <E>
  */
 public class DynamicLinkedList<E> implements SimpleContainer<E>, Iterable<E> {
-    private NodeList<E> first;
-    private NodeList<E> last;
-    private static int modCount = 0;
-    private int size = 0;
+    NodeList<E> first;
+    NodeList<E> last;
+    static int modCount = 0;
+    int size = 0;
 
     /**
      * Метод добавляет эллемент в коллекцию.
@@ -61,7 +61,7 @@ public class DynamicLinkedList<E> implements SimpleContainer<E>, Iterable<E> {
      * Класс определяет элемент входящий в список.
      * @param <E>
      */
-    private static class NodeList<E> {
+    static class NodeList<E> {
         E date;
         NodeList<E> next;
 
