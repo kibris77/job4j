@@ -18,12 +18,6 @@ public class SimpleQueueTest {
     }
 
     @Test
-    public void whenPushThreeElementsThenUseGetOneResultOne() {
-        assertThat(queue.get(0), is(1));
-        assertThat(queue.get(1), is(2));
-    }
-
-    @Test
     public void whenPushThreeElementsThenUsePollTwoResultOne() {
         assertThat(queue.poll(), is(1));
         assertThat(queue.poll(), is(2));

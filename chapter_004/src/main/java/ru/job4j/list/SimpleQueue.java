@@ -6,18 +6,20 @@ import java.util.NoSuchElementException;
  * Класс реализующий простую Очредь.
  * @param <E>
  */
-public class SimpleQueue<E> extends DynamicLinkedList<E> {
+public class SimpleQueue<E> {
+    private DynamicLinkedList<E> list = new DynamicLinkedList<>();
+
     /**
      * Метод возвращает элемент из очереди.
      * @return - значение.
      */
     public E poll() {
-        if (size == 0) {
+        if (list.size == 0) {
             throw new NoSuchElementException();
         }
-        E result = first.date;
-        first = first.next;
-        size--;
+        E result = list.first.date;
+        list.first = list.first.next;
+        list.size--;
         return result;
     }
 
@@ -26,6 +28,6 @@ public class SimpleQueue<E> extends DynamicLinkedList<E> {
      * @param value - значение.
      */
     public void push(E value) {
-        add(value);
+        list.add(value);
     }
 }

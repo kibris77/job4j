@@ -12,23 +12,15 @@ public class SimpleStackTest {
     @Before
     public void beforeTest() {
         stack = new SimpleStack<>();
-        stack.add(1);
-        stack.add(2);
-        stack.add(3);
-        stack.push(4);
-        stack.push(5);
-    }
-
-    @Test
-    public void whenAddFiveElementsThenUseGetOneResultFour() {
-        assertThat(stack.get(0), is(5));
-        assertThat(stack.get(1), is(4));
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
     }
 
     @Test
     public void whenPollFiveElementsThenUsePollResultFive() {
-        assertThat(stack.poll(), is(5));
-        assertThat(stack.poll(), is(4));
+        assertThat(stack.poll(), is(3));
+        assertThat(stack.poll(), is(2));
         assertThat(stack.poll(), is(1));
     }
 
