@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 public class DynamicArrayList<E> implements SimpleContainer<E>, Iterable<E> {
     private Object[] array = new Object[10];
     private int index = 0;
-    private static int modCount = 0;
+    private int modCount = 0;
 
     /**
      * Метод добавляет эллемент в коллекцию.

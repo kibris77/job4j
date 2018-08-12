@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 public class DynamicLinkedList<E> implements SimpleContainer<E>, Iterable<E> {
     NodeList<E> first;
     NodeList<E> last;
-    static int modCount = 0;
+    private int modCount = 0;
     int size = 0;
 
     /**
@@ -98,7 +98,6 @@ public class DynamicLinkedList<E> implements SimpleContainer<E>, Iterable<E> {
 
         @Override
         public E next() {
-            chechModifications();
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
