@@ -91,7 +91,6 @@ public class DynamicArrayList<E> implements SimpleContainer<E>, Iterable<E> {
 
         @Override
         public E next() {
-            chechModifications();
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
