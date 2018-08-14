@@ -29,7 +29,7 @@ public class UserTest {
 
     @Test
     public void whenAddFourElementsThenUseIterator() {
-        assertThat(map.size(), is(2));
+        assertThat(map.size(), is(1));
     }
 
 }
