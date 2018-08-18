@@ -1,5 +1,6 @@
 package ru.job4j.map;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -13,6 +14,7 @@ class SimpleMap<K, V> implements Iterable {
     private int size = 0;
     private int overSize = 75;
     private Object[] hashmap = new Object[16];
+    private int modCount = 0;
 
     /**
      * Метод добавляет пару ключ значение в коллекцию.
@@ -27,6 +29,7 @@ class SimpleMap<K, V> implements Iterable {
         if (hashmap[index] == null) {
             hashmap[index] = new Entry<>(key, value);
             size++;
+            modCount++;
             result = true;
         }
         return result;
@@ -52,6 +55,7 @@ class SimpleMap<K, V> implements Iterable {
         if (hashmap[index] != null) {
             hashmap[index] = null;
             size--;
+            modCount++;
             result = true;
         }
         return result;
@@ -131,12 +135,20 @@ class SimpleMap<K, V> implements Iterable {
      */
     class MapIterator implements Iterator<Entry<K, V>> {
         int index = 0;
+        private int expectedModCount;
+
+        public MapIterator() {
+            this.expectedModCount = modCount;
+        }
+
         @Override
         public boolean hasNext() {
             boolean result = false;
+            chechModifications();
             for (int i = index; i < capacity; i++) {
                 if (hashmap[i] != null) {
                     result = true;
+                    index = i;
                     break;
                 }
             }
@@ -145,18 +157,19 @@ class SimpleMap<K, V> implements Iterable {
 
         @Override
         public Entry<K, V> next() {
-            Entry<K, V> result = null;
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            for (int i = index; i < capacity; i++) {
-                if (hashmap[i] != null) {
-                    result = ((Entry<K, V>) hashmap[i]);
-                    index = ++i;
-                    break;
-                }
+            return (Entry<K, V>) hashmap[index++];
+        }
+
+        /**
+         * Метод проверяет изменения в коллкции из других потоков.
+         */
+        private void chechModifications() {
+            if (expectedModCount != modCount) {
+                throw new ConcurrentModificationException();
             }
-            return result;
         }
     }
 }
