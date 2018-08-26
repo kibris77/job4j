@@ -21,16 +21,12 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
      */
     @Override
     public boolean add(E parent, E child) {
-        boolean result = true;
+        boolean result = false;
         Node<E> nodeToAdd = findBy(parent).get();
-        for (Node<E> leaf : nodeToAdd.leaves()) {
-            if (leaf.eqValue(child)) {
-                result = false;
-                break;
-            }
-        }
-        if (result) {
+        Optional<Node<E>> childNode = findBy(child);
+        if (!childNode.isPresent()) {
             nodeToAdd.add(new Node<>(child));
+            result = true;
         }
         return result;
     }
