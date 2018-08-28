@@ -1,6 +1,8 @@
 package ru.job4j.store;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Класс для вычисления измнениний в массиве.
@@ -13,42 +15,21 @@ public class Store {
      * @return - объект класса Info.
      */
     public Info diff(List<User> previous, List<User> current) {
+        HashMap<Integer, User> usersMap = new HashMap<>();
         Info info = new Info();
-        int privLength = previous.size();
-        int currLength = current.size();
-        int[][] lcsMatrix = new int[(privLength + 1)][(currLength + 1)];
-        for (int i = 0; i < privLength; i++) {
-            for (int j = 0; j < currLength; j++) {
-                if (previous.get(i).id == current.get(j).id) {
-                    lcsMatrix[i + 1][j + 1] = lcsMatrix[i][j] + 1;
-                } else {
-                    lcsMatrix[i + 1][j + 1] = Math.max(lcsMatrix[i + 1][j], lcsMatrix[i][j + 1]);
-                }
-            }
+        for (User user : previous) {
+            usersMap.put(user.id, user);
         }
-        int i = 0;
-        int j = 0;
-        for (i = privLength - 1, j = currLength - 1; i >= 0 && j >= 0;) {
-            if (previous.get(i).id == current.get(j).id) {
-                if (!previous.get(i).name.equals(current.get(j).name)) {
+        for (User user : current) {
+            if (usersMap.containsKey(user.id)) {
+                if (!usersMap.get(user.id).equals(user)) {
                     info.changed++;
                 }
-                --i;
-                --j;
-            } else if (lcsMatrix[i + 1][j] > lcsMatrix[i][j + 1]) {
-                --j;
+            } else  {
                 info.added++;
-            } else {
-                --i;
-                info.deleted++;
             }
         }
-        if (i > -1) {
-            info.deleted = info.deleted + i + 1;
-        }
-        if (j > -1) {
-            info.added = info.added + j + 1;
-        }
+        info.deleted = previous.size() + info.added - current.size();
         return info;
     }
 
@@ -62,6 +43,24 @@ public class Store {
         public User(int id, String name) {
             this.id = id;
             this.name = name;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof User)) {
+                return false;
+            }
+            User user = (User) o;
+            return id == user.id
+                    && Objects.equals(name, user.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, name);
         }
     }
 
