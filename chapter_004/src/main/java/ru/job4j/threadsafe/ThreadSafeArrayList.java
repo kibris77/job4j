@@ -49,14 +49,14 @@ public class ThreadSafeArrayList<E> implements Iterable<E> {
 
         @Override
         public boolean hasNext() {
-            synchronized (ThreadSafeArrayList.this.arrayList) {
+            synchronized (ThreadSafeArrayList.this) {
                 return iterator.hasNext();
             }
         }
 
         @Override
         public E next() {
-            synchronized (ThreadSafeArrayList.this.arrayList) {
+            synchronized (ThreadSafeArrayList.this) {
                 return iterator.next();
             }
         }

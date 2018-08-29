@@ -49,14 +49,14 @@ public class ThreadSafeLinkedList<E> implements Iterable<E> {
 
         @Override
         public boolean hasNext() {
-            synchronized (ThreadSafeLinkedList.this.linkedList) {
+            synchronized (ThreadSafeLinkedList.this) {
                 return iterator.hasNext();
             }
         }
 
         @Override
         public E next() {
-            synchronized (ThreadSafeLinkedList.this.linkedList) {
+            synchronized (ThreadSafeLinkedList.this) {
                 return iterator.next();
             }
         }
