@@ -3,7 +3,7 @@ package ru.job4j.threadsafe;
 import org.junit.Before;
 
 import org.junit.Test;
-import org.junit.Before;
+
 
 import java.util.Iterator;
 

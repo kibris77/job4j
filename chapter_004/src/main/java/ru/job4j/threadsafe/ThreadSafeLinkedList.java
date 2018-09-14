@@ -36,29 +36,15 @@ public class ThreadSafeLinkedList<E> implements Iterable<E> {
      * @return
      */
     @Override
-    public  Iterator<E> iterator() {
-        return new ThreadSafeIterator();
+    public synchronized Iterator<E> iterator() {
+        return copy(this.linkedList).iterator();
     }
 
-    private class ThreadSafeIterator implements Iterator<E> {
-        private final Iterator<E> iterator;
-
-        private ThreadSafeIterator() {
-            this.iterator = ThreadSafeLinkedList.this.linkedList.iterator();
+    private DynamicLinkedList<E> copy(DynamicLinkedList<E> linkedList) {
+        DynamicLinkedList<E> result = new DynamicLinkedList<>();
+        for (E unit : linkedList) {
+            result.add(unit);
         }
-
-        @Override
-        public boolean hasNext() {
-            synchronized (ThreadSafeLinkedList.this) {
-                return iterator.hasNext();
-            }
-        }
-
-        @Override
-        public E next() {
-            synchronized (ThreadSafeLinkedList.this) {
-                return iterator.next();
-            }
-        }
+        return result;
     }
 }
