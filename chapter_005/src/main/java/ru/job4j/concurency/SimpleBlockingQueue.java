@@ -14,8 +14,6 @@ import java.util.Queue;
 public class SimpleBlockingQueue<T> {
     @GuardedBy("this")
     private Queue<T> queue = new LinkedList<>();
-    private boolean full = false;
-    private boolean epmty = true;
     private final int capacity = 10;
 
     /**
@@ -23,7 +21,7 @@ public class SimpleBlockingQueue<T> {
      * @param value - значение.
      */
     public synchronized void offer(T value) {
-        while (full) {
+        while (queue.size() > capacity) {
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -32,10 +30,6 @@ public class SimpleBlockingQueue<T> {
         }
         queue.offer(value);
         System.out.println("Добавлено " + value);
-        if (queue.size() > capacity) {
-            full = true;
-        }
-        epmty = false;
         notify();
     }
 
@@ -44,7 +38,7 @@ public class SimpleBlockingQueue<T> {
      * @return значение.
      */
     public synchronized T poll() {
-        while (epmty) {
+        while (queue.isEmpty()) {
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -53,10 +47,6 @@ public class SimpleBlockingQueue<T> {
         }
         T result = queue.poll();
         System.out.println("Получено " + result);
-        if (queue.isEmpty()) {
-            epmty = true;
-        }
-        full = false;
         notify();
         return result;
     }
