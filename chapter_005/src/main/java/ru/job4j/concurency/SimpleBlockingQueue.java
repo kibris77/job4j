@@ -50,4 +50,12 @@ public class SimpleBlockingQueue<T> {
         notify();
         return result;
     }
+
+    /**
+     * Метод возвращает размер очереди.
+     * @return кол-ыо элементов.
+     */
+    public synchronized int size() {
+        return queue.size();
+    }
 }
