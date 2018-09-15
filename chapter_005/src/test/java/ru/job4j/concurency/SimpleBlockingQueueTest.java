@@ -41,6 +41,16 @@ public class SimpleBlockingQueueTest {
         public void run() {
             while (true) {
                 queue.poll();
+                if (queue.size() < 1) {
+                    try {
+                        Thread.sleep(2000);
+                        if (queue.size() < 1) {
+                            break;
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }
