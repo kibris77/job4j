@@ -2,67 +2,38 @@ package ru.job4j.concurency;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.IntStream;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.*;
+
 public class SimpleBlockingQueueTest {
-    /**
-     * Класс Producer.
-     */
-    private class Producer implements Runnable {
-        SimpleBlockingQueue<Integer> queue;
-
-        public Producer(SimpleBlockingQueue queue) {
-            this.queue = queue;
-        }
-
-        @Override
-        public void run() {
-            int i = 0;
-            while (i < 20) {
-               try {
-                    Thread.sleep(5);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+    @Test
+    public void whenFetchAllThenGetIt() throws InterruptedException {
+        final CopyOnWriteArrayList<Integer> buffer = new CopyOnWriteArrayList<>();
+        final SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>();
+        Thread producer = new Thread(
+                () -> {
+                    IntStream.range(0, 5).forEach(
+                            queue::offer
+                    );
                 }
-                queue.offer(i++);
-            }
-        }
-    }
-
-    /**
-     * Класс Consumer.
-     */
-    private class Consumer implements Runnable {
-        SimpleBlockingQueue<Integer> queue;
-
-        public Consumer(SimpleBlockingQueue queue) {
-            this.queue = queue;
-        }
-
-        @Override
-        public void run() {
-            while (true) {
-                queue.poll();
-                if (queue.size() < 1) {
-                    try {
-                        Thread.sleep(2000);
-                        if (queue.size() < 1) {
-                            break;
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+        );
+        producer.start();
+        Thread consumer = new Thread(
+                () -> {
+                    while (!queue.isEmpty() || !Thread.currentThread().isInterrupted()) {
+                            buffer.add(queue.poll());
                     }
                 }
-            }
-        }
-    }
-
-    @Test
-    public void whenExecute2ThreadThen() throws InterruptedException {
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>();
-        Thread producer = new Thread(new Producer(queue));
-        Thread consumer = new Thread(new Consumer(queue));
-        producer.start();
+        );
         consumer.start();
         producer.join();
+        consumer.interrupt();
         consumer.join();
+        assertThat(buffer, is(Arrays.asList(0, 1, 2, 3, 4)));
     }
 }
+
