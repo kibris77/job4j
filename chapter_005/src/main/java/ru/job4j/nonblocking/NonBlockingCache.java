@@ -30,12 +30,11 @@ public class NonBlockingCache {
      */
     public void update(Base model) {
         cache.computeIfPresent(model.getId(), (Integer integer, Base base) -> {
-                if (model.getVersion() == base.getVersion()) {
-                    model.updateVersion();
-                    return model;
-                } else {
+                if (model.getVersion() != base.getVersion()) {
                     throw new OptimisticException("Data not valid");
                 }
+            model.updateVersion();
+            return model;
         });
     }
 }
