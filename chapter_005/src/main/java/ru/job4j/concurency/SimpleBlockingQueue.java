@@ -29,7 +29,6 @@ public class SimpleBlockingQueue<T> {
             }
         }
         queue.offer(value);
-        System.out.println("Добавлено " + value);
         notify();
     }
 
@@ -46,7 +45,6 @@ public class SimpleBlockingQueue<T> {
             }
         }
         T result = queue.poll();
-        System.out.println("Получено " + result);
         notify();
         return result;
     }
