@@ -8,19 +8,16 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class ParallelSearch {
+    private static volatile boolean isRunning = true;
+
     public static void main(String[] args) throws InterruptedException {
         SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<Integer>();
         final Thread consumer = new Thread(
                 () -> {
-                    try {
-                        if (queue.isEmpty()) {
-                            Thread.sleep(2000);
+                    while (isRunning) {
+                        if (!queue.isEmpty()) {
+                            System.out.println(queue.poll());
                         }
-                    } catch (Exception e) {
-
-                    }
-                    while (!queue.isEmpty()) {
-                        System.out.println(queue.poll());
                     }
                 }
         );
@@ -35,6 +32,7 @@ public class ParallelSearch {
 
                         }
                     }
+                    isRunning = false;
                 }
 
         ).start();
