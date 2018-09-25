@@ -1,20 +1,14 @@
 package ru.job4j.buffer;
 
-import net.jcip.annotations.GuardedBy;
-import net.jcip.annotations.ThreadSafe;
 import ru.job4j.concurency.SimpleBlockingQueue;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 public class ParallelSearch {
-    private static volatile boolean isRunning = true;
 
     public static void main(String[] args) throws InterruptedException {
         SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<Integer>();
         final Thread consumer = new Thread(
                 () -> {
-                    while (isRunning) {
+                    while (!Thread.currentThread().isInterrupted() || !queue.isEmpty()) {
                         if (!queue.isEmpty()) {
                             System.out.println(queue.poll());
                         }
@@ -22,7 +16,7 @@ public class ParallelSearch {
                 }
         );
         consumer.start();
-        new Thread(
+        final Thread producer = new Thread(
                 () -> {
                     for (int index = 0; index != 3; index++) {
                         queue.offer(index);
@@ -32,10 +26,13 @@ public class ParallelSearch {
 
                         }
                     }
-                    isRunning = false;
                 }
 
-        ).start();
+        );
+        producer.start();
+        producer.join();
+        consumer.interrupt();
+        consumer.join();
     }
 }
 
