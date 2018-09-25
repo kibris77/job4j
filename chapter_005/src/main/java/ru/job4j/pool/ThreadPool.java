@@ -21,16 +21,6 @@ public class ThreadPool {
             Thread thread = new Thread(
                 () -> {
                     while (!Thread.currentThread().isInterrupted()) {
-                        synchronized (tasks) {
-                            while (tasks.isEmpty()) {
-                                try {
-                                    System.out.println(Thread.currentThread().getName() + " Waiting");
-                                    tasks.wait();
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
                         tasks.poll().run();
                     }
             });
@@ -44,10 +34,7 @@ public class ThreadPool {
      * @param job
      */
     public void work(Runnable job) {
-        synchronized (tasks) {
             tasks.offer(job);
-            tasks.notifyAll();
-        }
     }
 
     /**
