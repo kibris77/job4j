@@ -1,26 +1,23 @@
 package ru.job4j.bomberman;
 
 /**
- * Класс реализует бомбермена.
+ * Класс опичывает активный эдемент на поле который постоянно премещается.
  */
-public class Bomberman extends ActiveUnit {
-    public Bomberman(Cell position, Board board, char img) {
+public class ActiveUnit extends Unit implements Runnable {
+    public ActiveUnit(Cell position, Board board, char img) {
         super(position, board, img);
     }
 
     @Override
     public void run() {
-        super.run();
+        moveUnit();
     }
 
-    /**
-     * Метол перемещает бомбермена по полю.
-     * @param dx - направление х.
-     * @param dy - направление y.
-     */
-    public void moveBomberman(int dx, int dy) {
+    @Override
+    public void moveUnit() {
         board.getBoard()[position.getY()][position.getX()].lock();
         while (!Thread.currentThread().isInterrupted() && isRunning) {
+            randomDirection();
             Cell newPosition = new Cell(position.getX() + dx, position.getY() + dy);
             if (board.move(position, newPosition)) {
                 position = newPosition;
