@@ -2,6 +2,7 @@ package ru.job4j.tracker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Главный класс.
@@ -44,9 +45,9 @@ public class MenuTracker {
     /**
      * Показать информацию о событии.
      */
-    public void show() {
+    public void show(Consumer<String> print) {
         for (UserAction action : actions) {
-            System.out.println(action.info());
+            print.accept(action.info());
         }
     }
 
