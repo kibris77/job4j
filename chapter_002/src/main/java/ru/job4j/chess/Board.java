@@ -6,6 +6,8 @@ import ru.job4j.chess.exeptions.OccupiedWayException;
 import ru.job4j.chess.figures.Cell;
 import ru.job4j.chess.figures.Figure;
 
+import java.util.function.BiFunction;
+
 /**
  * Класс шахматной доски.
  */
@@ -32,13 +34,13 @@ public class Board {
      */
     public boolean move(Cell source, Cell dest) throws ImposibleMoveException, OccupiedWayException, FigureNotFoundException {
         boolean rst = false;
-        int sourceFigure = this.findBy(source);
+        int sourceFigure = this.findBy(source, (figure1, cell2) -> figure1 != null && figure1.position().equals(cell2));
         if (sourceFigure == -1) {
             throw new FigureNotFoundException();
         }
         Cell[] steps = this.figures[sourceFigure].way(source, dest);
         for (int index = 0; index < steps.length; index++) {
-             int figureWay = this.findBy(steps[index]);
+             int figureWay = this.findBy(steps[index], (figure1, cell2) -> figure1 != null && figure1.position().equals(cell2));
              if (figureWay != -1) {
                  throw new OccupiedWayException();
              }
@@ -65,10 +67,10 @@ public class Board {
      * @param cell - координаты клетки.
      * @return индекс.
      */
-    private int findBy(Cell cell) {
+    private int findBy(Cell cell, BiFunction<Figure, Cell, Boolean> search) {
         int rst = -1;
         for (int index = 0; index != this.figures.length; index++) {
-            if (this.figures[index] != null && this.figures[index].position().equals(cell)) {
+            if (search.apply(this.figures[index], cell)) {
                 rst = index;
                 break;
             }
