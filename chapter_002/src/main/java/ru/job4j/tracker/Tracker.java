@@ -21,10 +21,8 @@ public class Tracker implements AutoCloseable {
      * @return - добавленная заявка.
      */
     public Item addItem(Item item) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO tracker(name, item, date) "
-                    + "VALUES (?, ?, ?);");
-
+        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO tracker(name, item, date) "
+                + "VALUES (?, ?, ?);");) {
             statement.setString(1, item.getName());
             statement.setString(2, item.getDescription());
             statement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
@@ -42,9 +40,8 @@ public class Tracker implements AutoCloseable {
      */
     public boolean replace(String id, Item item) {
         boolean result = false;
-        try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE tracker  "
-                    + "SET name = ?, item = ?, date = ? WHERE id = ?");
+        try (PreparedStatement statement = connection.prepareStatement("UPDATE tracker  "
+                + "SET name = ?, item = ?, date = ? WHERE id = ?");) {
             statement.setString(1, item.getName());
             statement.setString(2, item.getDescription());
             statement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
@@ -66,9 +63,8 @@ public class Tracker implements AutoCloseable {
      */
     public Item findById(String id) {
         Item result = null;
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT id, name, item, date "
-                    + "FROM tracker WHERE id = ?");
+        try (PreparedStatement statement = connection.prepareStatement("SELECT id, name, item, date "
+                + "FROM tracker WHERE id = ?");) {
             statement.setInt(1, Integer.parseInt(id));
             ResultSet set = statement.executeQuery();
             while (set.next()) {
@@ -90,9 +86,8 @@ public class Tracker implements AutoCloseable {
      */
     public List<Item> findByName(String name) {
         List<Item> result = new ArrayList<>();
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT id, name, item, date "
-                    + "FROM tracker WHERE name = ?");
+        try (PreparedStatement statement = connection.prepareStatement("SELECT id, name, item, date "
+                + "FROM tracker WHERE name = ?");) {
             statement.setString(1, name);
             ResultSet set = statement.executeQuery();
             while (set.next()) {
@@ -113,9 +108,8 @@ public class Tracker implements AutoCloseable {
      */
     public List<Item> findAll() {
         List<Item> result = new ArrayList<>();
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT id, name, item, date "
-                    + "FROM tracker");
+        try (PreparedStatement statement = connection.prepareStatement("SELECT id, name, item, date "
+                + "FROM tracker");) {
             ResultSet set = statement.executeQuery();
             while (set.next()) {
                 Item item = new Item(set.getString("name"),
@@ -135,8 +129,7 @@ public class Tracker implements AutoCloseable {
      */
     public boolean delete(String id) {
         boolean result = false;
-        try {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM tracker WHERE id = ?");
+        try (PreparedStatement statement = connection.prepareStatement("DELETE FROM tracker WHERE id = ?");) {
             statement.setInt(1, Integer.parseInt(id));
             int changes = statement.executeUpdate();
             if (changes > 0) {
