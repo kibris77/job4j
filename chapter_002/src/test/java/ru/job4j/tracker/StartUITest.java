@@ -43,7 +43,7 @@ public class StartUITest {
     @Test
     public void whenAddNewItemThenTrackerHasSameItem() {
         StubInput input = new StubInput(new String[]{"0", "Ne Rabotaet", "Vse slomalos", "6"});
-        Tracker tracker = new Tracker();
+        Tracker tracker = new Tracker(new Config());
         StartUI startUI = new StartUI(tracker, input);
         startUI.init();
         assertThat(tracker.findAll().get(0).getName(), is("Ne Rabotaet"));
@@ -52,7 +52,7 @@ public class StartUITest {
     @Test
     public void whenUpdateThenTrackerHasUpdatedValue() {
         // создаём Tracker
-        Tracker tracker = new Tracker();
+        Tracker tracker = new Tracker(new Config());
         //Напрямую добавляем заявку
         Item item = tracker.addItem(new Item("test name", "desc", System.currentTimeMillis()));
         //создаём StubInput с последовательностью действий(производим замену заявки)
@@ -66,7 +66,7 @@ public class StartUITest {
     @Test
     public void whenDeleteThenTrackerValue() {
         // создаём Tracker
-        Tracker tracker = new Tracker();
+        Tracker tracker = new Tracker(new Config());
         Item item = tracker.addItem(new Item("test name", "desc", System.currentTimeMillis()));
         Item item1 = tracker.addItem(new Item("test name1", "desc1", System.currentTimeMillis()));
         Item[] items = new Item[]{item};
@@ -77,7 +77,7 @@ public class StartUITest {
 
     @Test
     public void whenFindItemId() {
-        Tracker tracker = new Tracker();
+        Tracker tracker = new Tracker(new Config());
         Item item = tracker.addItem(new Item("test name", "desc", System.currentTimeMillis()));
         Input input = new StubInput(new String[]{"4", item.getId(), "6"});
         new StartUI(tracker, input).init();
@@ -93,7 +93,7 @@ public class StartUITest {
 
     @Test
     public void whenFindItemName() {
-        Tracker tracker = new Tracker();
+        Tracker tracker = new Tracker(new Config());
         Item item = tracker.addItem(new Item("test name", "desc", System.currentTimeMillis()));
         Input input = new StubInput(new String[]{"5", item.getName(), "6"});
         new StartUI(tracker, input).init();

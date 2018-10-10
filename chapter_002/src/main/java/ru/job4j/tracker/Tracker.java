@@ -1,14 +1,19 @@
 package ru.job4j.tracker;
 
+import java.sql.*;
 import java.util.*;
 import java.util.function.Predicate;
 
 /**
  * Класс трекер заявок.
  */
-public class Tracker {
-    private List<Item> items = new ArrayList<>();
+public class Tracker implements AutoCloseable {
     private static final Random RN = new Random();
+    private Connection connection;
+
+    public Tracker(Config config) {
+        connection = config.connectToDB();
+    }
 
     /**
      * Метод добавляет заявку в хранилище.
@@ -16,8 +21,17 @@ public class Tracker {
      * @return - добавленная заявка.
      */
     public Item addItem(Item item) {
-        item.setId(this.generateId());
-        this.items.add(item);
+        try {
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO tracker(name, item, date) "
+                    + "VALUES (?, ?, ?);");
+
+            statement.setString(1, item.getName());
+            statement.setString(2, item.getDescription());
+            statement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return item;
     }
 
@@ -28,13 +42,19 @@ public class Tracker {
      */
     public boolean replace(String id, Item item) {
         boolean result = false;
-        for (int index = 0; index < this.items.size(); index++) {
-            if (this.items.get(index).getId().equals(id)) {
-                item.setId(id);
-                this.items.set(index, item);
+        try {
+            PreparedStatement statement = connection.prepareStatement("UPDATE tracker  "
+                    + "SET name = ?, item = ?, date = ? WHERE id = ?");
+            statement.setString(1, item.getName());
+            statement.setString(2, item.getDescription());
+            statement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+            statement.setInt(4, Integer.parseInt(id));
+            int changes = statement.executeUpdate();
+            if (changes > 0) {
                 result = true;
-                break;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return result;
     }
@@ -46,13 +66,20 @@ public class Tracker {
      */
     public Item findById(String id) {
         Item result = null;
-        for (Item item : items) {
-            Predicate<String> predicate = (value) -> item.getId().equals(value);
-            if (predicate.test(id)) {
-                result = item;
-                break;
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT id, name, item, date "
+                    + "FROM tracker WHERE id = ?");
+            statement.setInt(1, Integer.parseInt(id));
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                result = new Item(set.getString("name"),
+                        set.getString("item"), set.getTimestamp("date").getTime());
+                result.setId(set.getString("id"));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
         return result;
     }
 
@@ -63,11 +90,19 @@ public class Tracker {
      */
     public List<Item> findByName(String name) {
         List<Item> result = new ArrayList<>();
-        for (Item item : items) {
-            Predicate<String> predicate = (value) -> item.getName().equals(value);
-            if (predicate.test(name)) {
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT id, name, item, date "
+                    + "FROM tracker WHERE name = ?");
+            statement.setString(1, name);
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                Item item = new Item(set.getString("name"),
+                        set.getString("item"), set.getTimestamp("date").getTime());
+                item.setId(set.getString("id"));
                 result.add(item);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return result;
     }
@@ -77,7 +112,21 @@ public class Tracker {
      * @return - массив заявок.
      */
     public List<Item> findAll() {
-        return this.items;
+        List<Item> result = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT id, name, item, date "
+                    + "FROM tracker");
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                Item item = new Item(set.getString("name"),
+                        set.getString("item"), set.getTimestamp("date").getTime());
+                item.setId(set.getString("id"));
+                result.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     /**
@@ -86,15 +135,15 @@ public class Tracker {
      */
     public boolean delete(String id) {
         boolean result = false;
-        Iterator iterator = this.items.iterator();
-        while (iterator.hasNext()) {
-            Item item = (Item) iterator.next();
-            Predicate<String> predicate = (value) -> item.getId().equals(value);
-            if (predicate.test(id)) {
-                iterator.remove();
+        try {
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM tracker WHERE id = ?");
+            statement.setInt(1, Integer.parseInt(id));
+            int changes = statement.executeUpdate();
+            if (changes > 0) {
                 result = true;
-                break;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return result;
     }
@@ -105,5 +154,16 @@ public class Tracker {
      */
     private String generateId() {
         return String.valueOf(System.currentTimeMillis() + RN.nextInt());
+    }
+
+    @Override
+    public void close() {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

@@ -9,7 +9,7 @@ import static org.junit.Assert.assertThat;
 public class TrackerTest {
     @Test
     public void whenAddNewItemThenTrackerHasSameItem() {
-        Tracker tracker = new Tracker();
+        Tracker tracker = new Tracker(new Config());
         Item item = new Item("test1", "testDescription", 123L);
         Item item1 = new Item("test1", "test1desc]", 131L);
         tracker.addItem(item);
@@ -19,7 +19,7 @@ public class TrackerTest {
 
     @Test
     public void whenReplaceNameThenReturnNewName() {
-        Tracker tracker = new Tracker();
+        Tracker tracker = new Tracker(new Config());
         Item previous = new Item("test1", "testDescription", 123L);
         // Добавляем заявку в трекер. Теперь в объект проинициализирован id.
         tracker.addItem(previous);
@@ -35,7 +35,7 @@ public class TrackerTest {
 
     @Test
     public void whenFindByIdThenReturnName() {
-        Tracker tracker = new Tracker();
+        Tracker tracker = new Tracker(new Config());
         Item item = new Item("test1", "testDescription", 123L);
         tracker.addItem(item);
         Item item1 = new Item("test2", "testDescription2", 1234L);
@@ -45,7 +45,7 @@ public class TrackerTest {
 
     @Test
     public void whenFindByNameThenReturnId() {
-        Tracker tracker = new Tracker();
+        Tracker tracker = new Tracker(new Config());
         Item item = new Item("test1", "testDescription", 123L);
         tracker.addItem(item);
         Item item1 = new Item("test2", "testDescription2", 1234L);
@@ -54,7 +54,7 @@ public class TrackerTest {
     }
     @Test
     public void whenFindAllThenReturnArray() {
-        Tracker tracker = new Tracker();
+        Tracker tracker = new Tracker(new Config());
         Item item = new Item("test1", "testDescription", 123L);
         tracker.addItem(item);
         Item item1 = new Item("test2", "testDescription2", 1234L);
@@ -66,7 +66,7 @@ public class TrackerTest {
 
     @Test
     public void whenDeleteByIdThenReturnArray() {
-        Tracker tracker = new Tracker();
+        Tracker tracker = new Tracker(new Config());
         Item item = new Item("test1", "testDescription", 123L);
         tracker.addItem(item);
         Item item1 = new Item("test2", "testDescription2", 1234L);

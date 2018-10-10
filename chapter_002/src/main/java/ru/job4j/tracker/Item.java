@@ -2,6 +2,7 @@ package ru.job4j.tracker;
 
 import java.util.Date;
 import java.util.Random;
+import java.util.logging.Logger;
 
 /**
  * Класс заявка.
