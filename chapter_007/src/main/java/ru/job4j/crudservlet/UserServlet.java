@@ -29,56 +29,13 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType("text/html");
-        PrintWriter printWriter = new PrintWriter(resp.getOutputStream());
-        List<User> users = validateService.findAll();
-        printWriter.append("<!DOCTYPE html>\n"
-                + "<html lang=\"en\">\n"
-                + "<head>\n"
-                + "    <meta charset=\"UTF-8\">\n"
-                + "    <title>Title</title>\n"
-                + "</head>\n"
-                + "<body>\n"
-                + "<table class=\"tftable\" border=\"1\">\n"
-                + "    <tr><th>ID</th><th>Name</th><th>Login</th><th>Email</th><th>Update</th><th>Delete</th></tr>");
-        for (User user : users) {
-           printWriter.append(String.format("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s"
-                           + "</td>"
-                           + "<td>"
-                           + "<form action=\"" + req.getContextPath() + "/edit\" method=\"get\">\n"  +
-                           "    <input type=\"hidden\" name=\"id\" value=\"" + user.getId() + "\">\n" +
-                           "    <input type=\"hidden\" name=\"name\" value=\""+ user.getName() + "\">\n" +
-                           "    <input type=\"hidden\" name=\"login\" value=\""+ user.getLogin() + "\">\n" +
-                           "    <input type=\"hidden\" name=\"email\" value=\"" + user.getEmail() + "\">\n" +
-                           "    <input type=\"submit\" value=\"Изменить\">\n" +
-                           "</form>"
-                           +"</td>"
-                           + "<td>"
-                           + "<form action=\"" + req.getContextPath() + "/user\" method=\"post\">\n" +
-                           "    <input type=\"hidden\" name=\"action\" value=\"delete\">\n" +
-                           "    <input type=\"hidden\" name=\"id\" value=\"" + user.getId()+ "\">\n" +
-                           "    <input type=\"submit\" value=\"Удалить\">\n" +
-                           "</form>"
-                           +"</td>"
-                           + "</tr>\n",
-                   user.getId(), user.getName(), user.getLogin(), user.getEmail()));
-        }
-        printWriter.append("</table>\n" +
-                "<form action=\"" + req.getContextPath() + "/create\" method=\"get\">\n" +
-                "    <input type=\"submit\" value=\"Добавить пользователя\">\n" +
-                "</form>"
-                + "</body>\n"
-                + "</html>");
-        printWriter.flush();
+        resp.sendError(400);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType("text/html");
-        PrintWriter printWriter = new PrintWriter(resp.getOutputStream());
-        printWriter.append(dispatch.get(req.getParameter("action")).apply(req));
-        printWriter.flush();
-        doGet(req, resp);
+        dispatch.get(req.getParameter("action")).apply(req);
+        resp.sendRedirect(req.getContextPath() + "/index.jsp");
     }
 
     Function<HttpServletRequest, String> add() {

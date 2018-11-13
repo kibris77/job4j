@@ -29,7 +29,7 @@ public class ValidateService {
     public boolean add(String id, String name, String login, String email) throws WrongDataException {
         boolean result = false;
         checkData(id, name, login, email);
-        int userId = checkId(id);
+        int userId = checkId(id, true);
         if (memoryStore.findById(userId) == null) {
             memoryStore.add(new User(userId, name, login, email, System.currentTimeMillis()));
             result = true;
@@ -74,8 +74,8 @@ public class ValidateService {
      * @return - boolean.
      * @throws WrongDataException - исключение при неправилном вводе данных.
      */
-    public User findById(String id) throws WrongDataException {
-        int userId = checkId(id);
+    public User findById(String id, boolean checkId) throws WrongDataException {
+        int userId = checkId(id, checkId);
         return memoryStore.findById(userId);
     }
 
@@ -108,14 +108,14 @@ public class ValidateService {
      * @return - int.
      * @throws WrongDataException - исключение при неправилном вводе данных.
      */
-    private int checkId(String id) throws WrongDataException {
+    private int checkId(String id, boolean checkId) throws WrongDataException {
         int userId;
         try {
             userId = Integer.parseInt(id);
         } catch (NumberFormatException e) {
             throw new WrongDataException("Неверный ID");
         }
-        if (memoryStore.findById(userId) != null) {
+        if (checkId && memoryStore.findById(userId) != null) {
             throw new WrongDataException("Пользователь уже существует");
         }
         return userId;
