@@ -8,7 +8,6 @@ import java.util.Properties;
  * Класс определяет кофигурацию подключения к базе данных.
  */
 public class PropLoader {
-    public final static String PROP_FILE = "./chapter_006/src/main/resources/app.properties";
     public static String dbDriver;
     public static String dbUrl;
     public static String user;
@@ -17,9 +16,8 @@ public class PropLoader {
 
     static {
         try {
-            FileInputStream input = new FileInputStream(PROP_FILE);
             Properties properties = new Properties();
-            properties.load(input);
+            properties.load(PropLoader.class.getClassLoader().getResourceAsStream("app.properties"));
             dbDriver = properties.getProperty("jdbc.driver");
             dbUrl = properties.getProperty("jdbc.url");
             user = properties.getProperty("jdbc.username");

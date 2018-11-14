@@ -20,7 +20,7 @@ public class DBConection implements AutoCloseable {
 
         } catch (ClassNotFoundException e) {
             System.out.println("PostgreSQL JDBC Driver is not found. Include it in your library path ");
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         System.out.println("PostgreSQL JDBC Driver successfully connected");
         Connection connection = null;
@@ -36,12 +36,13 @@ public class DBConection implements AutoCloseable {
                     + ")");
         } catch (SQLException e) {
             System.out.println("Connection Failed");
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         if (connection != null) {
             System.out.println("You successfully connected to database now");
         } else {
             System.out.println("Failed to make connection to database");
+            LOGGER.error("Failed to make connection to database");
         }
         this.connection = connection;
     }
@@ -62,7 +63,7 @@ public class DBConection implements AutoCloseable {
                 last = set.getTimestamp(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return last;
     }

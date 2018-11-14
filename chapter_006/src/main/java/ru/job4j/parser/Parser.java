@@ -1,5 +1,7 @@
 package ru.job4j.parser;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,6 +18,7 @@ import java.util.Date;
  * Класс для парсинга вакансий сайта sql.ru.
  */
 public class Parser {
+    private static final Logger LOGGER = LogManager.getLogger(Parser.class);
     /**
      * Основной метод для парсинга сайта sql.ru.
      */
@@ -41,8 +44,10 @@ public class Parser {
             }
         } catch (IOException e) {
             System.out.println("Ощибка парсинга сайта");
+            LOGGER.error("Ощибка парсинга сайта");
         } catch (Exception e) {
             System.out.println("Ошибка в подключении к базам данных");
+            LOGGER.error("Ошибка в подключении к базам данных");
         }
     }
 

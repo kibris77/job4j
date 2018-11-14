@@ -1,5 +1,5 @@
 <%@ page import="ru.job4j.crudservlet.User" %>
-<%@ page import="ru.job4j.crudservlet.MemoryStore" %><%--
+<%@ page import="ru.job4j.crudservlet.ValidateService" %><%--
   Created by IntelliJ IDEA.
   User: alexander
   Date: 13.11.18
@@ -14,7 +14,7 @@
 <body>
      <table class="tftable" border="1">
          <tr><th>ID</th><th>Name</th><th>Login</th><th>Email</th><th>Update</th><th>Delete</th></tr>
-         <% for (User user : MemoryStore.getInstance().findAll()) { %>
+         <% for (User user : ValidateService.getInstance().findAll()) { %>
          <tr><td><%= user.getId()%></td><td><%= user.getName()%></td><td><%= user.getLogin()%></td>
              <td><%= user.getEmail()%></td>
              <td>
