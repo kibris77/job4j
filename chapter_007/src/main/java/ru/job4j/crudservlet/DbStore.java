@@ -7,6 +7,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс для хранения данных в базе данных на серврере. Рализует шаблон Синглтон.
+ */
 public class DbStore implements Store{
     public static final BasicDataSource SOURCE = new BasicDataSource();
     private static DbStore INSTANCE = new DbStore();
@@ -24,6 +27,10 @@ public class DbStore implements Store{
         return INSTANCE;
     }
 
+    /**
+     * Метод добавляет пользователя в базу данных.
+     * @param user - класс пользователя User.
+     */
     @Override
     public void add(User user) {
         try (Connection connection = SOURCE.getConnection();
@@ -41,6 +48,11 @@ public class DbStore implements Store{
         }
     }
 
+    /**
+     * Метод редактирует пользователя в базе данных.
+     * @param id - id пользователя.
+     * @param user - класс пользователя User.
+     */
     @Override
     public void update(int id, User user) {
         try (Connection connection = SOURCE.getConnection();
@@ -59,6 +71,11 @@ public class DbStore implements Store{
         }
     }
 
+    /**
+     * Метод удаляет пользователя из базы.
+     * @param id - id пользователя.
+     * @return - класс пользователя User.
+     */
     @Override
     public User delete(int id) {
         User user = findById(id);
@@ -73,6 +90,11 @@ public class DbStore implements Store{
         return user;
     }
 
+    /**
+     * Метод находит пользователя по id.
+     * @param id - id пользователя.
+     * @return - класс пользователя User.
+     */
     @Override
     public User findById(int id) {
         User result = null;
@@ -96,6 +118,10 @@ public class DbStore implements Store{
         return result;
     }
 
+    /**
+     * Метод возвращет всех пользователей из базы данных.
+     * @return = ArrayList(User).
+     */
     @Override
     public List<User> findAll() {
         List<User> result = new ArrayList<>();
