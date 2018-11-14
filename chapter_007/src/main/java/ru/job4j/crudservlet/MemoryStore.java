@@ -7,27 +7,10 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Класс для хранения данных. Рализует шаблон Синглетон.
  */
-public class MemoryStore implements Store {
-    private static volatile MemoryStore instance;
+public enum  MemoryStore implements Store {
+    INSTANCE;
 
     private final ConcurrentHashMap<Integer, User> store = new ConcurrentHashMap<Integer, User>();
-
-    private MemoryStore() {
-    }
-
-    public static MemoryStore getInstance() {
-        MemoryStore localInstance = instance;
-        if (localInstance == null) {
-            synchronized (MemoryStore.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    localInstance = new MemoryStore();
-                    instance = localInstance;
-                }
-            }
-        }
-        return localInstance;
-    }
 
     /**
      * Метод добавляет пользователя в память.

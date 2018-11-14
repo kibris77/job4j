@@ -1,5 +1,7 @@
 package ru.job4j.crudservlet;
 
+import java.util.Objects;
+
 /**
  * Класс описывает модель пользователя в сервлете.
  */
@@ -36,5 +38,22 @@ public class User {
 
     public long getDate() {
         return date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return id == user.id &&
+                date == user.date &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(login, user.login) &&
+                Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, login, email, date);
     }
 }
