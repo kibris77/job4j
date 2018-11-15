@@ -3,13 +3,12 @@ package ru.job4j.crudservlet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -28,14 +27,28 @@ public class UserServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.sendError(400);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        if (req.getParameter("method") != null && req.getParameter("method").equals("create")) {
+            req.getRequestDispatcher("/WEB-INF/create.jsp").forward(req, resp);
+        } else if (req.getParameter("method") != null && req.getParameter("method").equals("update")) {
+            User user = null;
+            try {
+                user = validateService.findById(req.getParameter("id"), false);
+            } catch (WrongDataException e) {
+                e.printStackTrace();
+            }
+            req.setAttribute("user", user);
+            req.getRequestDispatcher("/WEB-INF/update.jsp").forward(req, resp);
+        } else {
+            req.setAttribute("users", validateService.findAll());
+            req.getRequestDispatcher("/WEB-INF/index.jsp").forward(req, resp);
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         dispatch.get(req.getParameter("action")).apply(req);
-        resp.sendRedirect(req.getContextPath() + "/index.jsp");
+        resp.sendRedirect(req.getContextPath() + "/");
     }
 
     Function<HttpServletRequest, String> add() {

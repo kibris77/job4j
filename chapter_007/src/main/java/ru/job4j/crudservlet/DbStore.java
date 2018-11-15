@@ -10,9 +10,9 @@ import java.util.List;
 /**
  * Класс для хранения данных в базе данных на серврере. Рализует шаблон Синглтон.
  */
-public class DbStore implements Store{
+public class DbStore implements Store {
     public static final BasicDataSource SOURCE = new BasicDataSource();
-    private static DbStore INSTANCE = new DbStore();
+    private static DbStore instance = new DbStore();
 
     private DbStore() {
         SOURCE.setDriver(new Driver());
@@ -24,7 +24,7 @@ public class DbStore implements Store{
         SOURCE.setMaxOpenPreparedStatements(100);    }
 
     public static DbStore getInstance() {
-        return INSTANCE;
+        return instance;
     }
 
     /**
@@ -34,8 +34,8 @@ public class DbStore implements Store{
     @Override
     public void add(User user) {
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement st = connection.prepareStatement("INSERT INTO servlet(id, name, login, email, data) " +
-                     "VALUES (?, ?, ?, ?, ?);")
+             PreparedStatement st = connection.prepareStatement("INSERT INTO servlet(id, name, login, email, data) "
+                     + "VALUES (?, ?, ?, ?, ?);")
         ) {
             st.setInt(1, user.getId());
             st.setString(2, user.getName());
@@ -56,9 +56,9 @@ public class DbStore implements Store{
     @Override
     public void update(int id, User user) {
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement st = connection.prepareStatement("UPDATE servlet " +
-                     "SET name = ?, login = ?, email=?, data = ? " +
-                     "WHERE id = ?")
+             PreparedStatement st = connection.prepareStatement("UPDATE servlet "
+                     + "SET name = ?, login = ?, email=?, data = ? "
+                     + "WHERE id = ?")
         ) {
             st.setString(1, user.getName());
             st.setString(2, user.getLogin());
@@ -99,8 +99,8 @@ public class DbStore implements Store{
     public User findById(int id) {
         User result = null;
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement st = connection.prepareStatement("SELECT id, name, login, " +
-                     "email, data FROM servlet WHERE id = ?");
+             PreparedStatement st = connection.prepareStatement("SELECT id, name, login, "
+                     + "email, data FROM servlet WHERE id = ?");
         ) {
             st.setInt(1, id);
             ResultSet set = st.executeQuery();

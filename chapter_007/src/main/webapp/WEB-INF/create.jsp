@@ -11,7 +11,7 @@
     <title>Создание пользовтаеля</title>
 </head>
 <body>
-    <form action="<%=request.getContextPath()%>/user" method="post">
+    <form action="${requestScope.sessionContext.contextPath}/chapter_007/" method="post">
         ID:<br>
         <input type="text" name="id"><br>
         Имя:<br>
