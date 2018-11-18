@@ -39,6 +39,9 @@ public class UserServlet extends HttpServlet {
             }
             req.setAttribute("user", user);
             req.getRequestDispatcher("/WEB-INF/update.jsp").forward(req, resp);
+        } else if (req.getParameter("method") != null && req.getParameter("method").equals("unsign")) {
+            req.getSession().invalidate();
+            resp.sendRedirect(req.getContextPath() + "/");
         } else {
             req.setAttribute("users", validateService.findAll());
             req.getRequestDispatcher("/WEB-INF/index.jsp").forward(req, resp);
@@ -51,7 +54,7 @@ public class UserServlet extends HttpServlet {
         resp.sendRedirect(req.getContextPath() + "/");
     }
 
-    Function<HttpServletRequest, String> add() {
+    private Function<HttpServletRequest, String> add() {
         return reqest -> {
             String result;
             try {
@@ -59,7 +62,9 @@ public class UserServlet extends HttpServlet {
                 String name = reqest.getParameter("name");
                 String login = reqest.getParameter("login");
                 String email = reqest.getParameter("email");
-                validateService.add(id, name, login, email);
+                String password = reqest.getParameter("password");
+                String role = reqest.getParameter("role");
+                validateService.add(id, name, login, email, password, role);
                 result = "Данные обновлены";
             } catch (WrongDataException e) {
                 result = e.getMessage();
@@ -68,7 +73,7 @@ public class UserServlet extends HttpServlet {
         };
     }
 
-    Function<HttpServletRequest, String> update() {
+    private Function<HttpServletRequest, String> update() {
         return reqest -> {
             String result;
             try {
@@ -76,7 +81,8 @@ public class UserServlet extends HttpServlet {
                 String name = reqest.getParameter("name");
                 String login = reqest.getParameter("login");
                 String email = reqest.getParameter("email");
-                validateService.update(id, name, login, email);
+                String role = reqest.getParameter("role");
+                validateService.update(id, name, login, email, null, role);
                 result = "Данные обновлены";
             } catch (WrongDataException e) {
                 result = e.getMessage();
@@ -85,12 +91,14 @@ public class UserServlet extends HttpServlet {
         };
     }
 
-    Function<HttpServletRequest, String> delete() {
+    private Function<HttpServletRequest, String> delete() {
         return reqest -> {
             String result;
             try {
                 String id = reqest.getParameter("id");
-                validateService.delete(id);
+                if (!validateService.delete(id)) {
+                    throw new WrongDataException("Пользователь не существует");
+                }
                 result = "Данные обновлены";
             } catch (WrongDataException e) {
                 result = e.getMessage();

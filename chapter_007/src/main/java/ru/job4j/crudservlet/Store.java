@@ -10,5 +10,6 @@ public interface Store {
     void update(int id, User user);
     User delete(int id);
     User findById(int id);
+    User findByLogin(String login);
     List<User> findAll();
 }

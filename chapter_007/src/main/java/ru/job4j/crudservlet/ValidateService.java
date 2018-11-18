@@ -26,12 +26,12 @@ public class ValidateService {
      * @return - boolean.
      * @throws WrongDataException - исключение при неправилном вводе данных.
      */
-    public boolean add(String id, String name, String login, String email) throws WrongDataException {
+    public boolean add(String id, String name, String login, String email, String password, String role) throws WrongDataException {
         boolean result = false;
-        checkData(id, name, login, email);
+        checkData(id, name, login, email, password, role);
         int userId = checkId(id, true);
         if (memoryStore.findById(userId) == null) {
-            memoryStore.add(new User(userId, name, login, email, System.currentTimeMillis()));
+            memoryStore.add(new User(userId, name, login, email, password, role, System.currentTimeMillis()));
             result = true;
         }
         return result;
@@ -46,12 +46,12 @@ public class ValidateService {
      * @return - boolean.
      * @throws WrongDataException - исключение при неправилном вводе данных.
      */
-    public boolean update(String id, String name, String login, String email) throws WrongDataException {
+    public boolean update(String id, String name, String login, String email, String password, String role) throws WrongDataException {
         boolean result = false;
-        checkData(id, name, login, email);
+        checkData(id, name, login, email, password, role);
         int userId = Integer.parseInt(id);
         if (memoryStore.findById(userId) != null) {
-            memoryStore.update(userId, new User(userId, name, login, email, System.currentTimeMillis()));
+            memoryStore.update(userId, new User(userId, name, login, email, password, role, System.currentTimeMillis()));
             result = true;
         }
         return result;
@@ -64,7 +64,12 @@ public class ValidateService {
      * @throws WrongDataException - исключение при неправилном вводе данных.
      */
     public boolean delete(String id) throws WrongDataException {
-        int userId = Integer.parseInt(id);
+        int userId;
+        try {
+            userId = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            throw new WrongDataException(e.getMessage());
+        }
         return (memoryStore.delete(userId) != null);
     }
 
@@ -96,8 +101,9 @@ public class ValidateService {
      * @return - boolean.
      * @throws WrongDataException - исключение при неправилном вводе данных.
      */
-    private void checkData(String id, String name, String login, String email) throws WrongDataException {
-        if (id == "" || name == "" || login == "" || email == "") {
+    private void checkData(String id, String name, String login, String email, String password, String role) throws WrongDataException {
+        if (id.equals("") || name.equals("") || login.equals("") || email.equals("")
+                || role.equals("") || (password != null && password.equals(""))) {
             throw new WrongDataException("Введены неверные данные");
         }
     }
@@ -119,5 +125,19 @@ public class ValidateService {
             throw new WrongDataException("Пользователь уже существует");
         }
         return userId;
+    }
+
+    public User findByLogin(String login) {
+        return memoryStore.findByLogin(login);
+    }
+
+    public boolean isAuthorized(String login, String password) {
+        boolean result = false;
+        User user = null;
+        user = findByLogin(login);
+        if (user != null && user.getPassword().equals(password)) {
+            result = true;
+        }
+        return result;
     }
 }

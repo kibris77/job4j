@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: alexander
@@ -16,13 +18,30 @@
     ${user.id}
     <input type="hidden" name="id" value="${user.id}"><br>
     Имя:<br>
-    <input type="text" name="name" value="${user.name}>"><br>
+    <input type="text" name="name" value="${user.name}"><br>
     Логин:<br>
     <input type="text" name="login" value="${user.login}"><br>
     Email:<br>
-    <input type="text" name="email" value="${user.email}">
+    <input type="text" name="email" value="${user.email}"><br>
+    Role: ${user.role}<br>
+    <c:if test="${sessionScope.role == 'admin' && user.role =='admin'}">
+    <select name="role">
+        <option selected value="admin">Admin</option>
+        <option value="user">User</option>
+    </select><br>
+    </c:if>
+    <c:if test="${sessionScope.role == 'admin' && user.role =='user'}">
+        <select name="role">
+            <option value="admin">Admin</option>
+            <option selected value="user">User</option>
+        </select><br>
+    </c:if>
+    <c:if test="${sessionScope.role == 'user'}">
+    <input type="hidden" name="role" value="${user.role}">
+    </c:if>
     <input name="action" type="hidden" value="update"/>
     <br><input type="submit" value="Отправить">
+
 </form>
 </body>
 </html>

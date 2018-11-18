@@ -47,6 +47,11 @@ public enum  MemoryStore implements Store {
         return store.get(id);
     }
 
+    @Override
+    public User findByLogin(String login) {
+        return null;
+    }
+
     /**
      * Метод возвращет всех пользователей из памяти.
      * @return = ArrayList(User).
@@ -54,4 +59,6 @@ public enum  MemoryStore implements Store {
     public List<User> findAll() {
         return new ArrayList<>(store.values());
     }
+
+
 }

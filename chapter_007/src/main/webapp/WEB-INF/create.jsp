@@ -19,7 +19,14 @@
         Логин:<br>
         <input type="text" name="login"><br>
         Email:<br>
-        <input type="text" name="email">
+        <input type="text" name="email"><br>
+        Password:<br>
+        <input type="text" name="password"><br>
+        Role:<br>
+        <select name="role">
+            <option value="admin">Admin</option>
+            <option value="user">User</option>
+        </select>
         <input name="action" type="hidden" value="add"/>
         <br><input type="submit" value="Отправить">
     </form>
