@@ -7,6 +7,33 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="application/javascript">
+        function validate() {
+            var isError = false;
+            var result = '';
+            var arr = new Map([
+                ['#name', 'Имя'],
+                ['#surname', 'Фамилия'],
+                ['#text', 'Описание']
+            ]);
+            for(let key of arr.keys()) {
+                if($(key).val() == "") {
+                    result +=arr.get(key) + " ";
+                    isError = true;
+                }
+            }
+            var radio = $("input[name= 'sex']");
+            if (!radio[0].checked && !radio[1].checked) {
+                result += "Пол";
+                isError = true;
+            }
+            if(isError) {
+                alert("Вы не заполнили поля: " + result);
+            }
+            return !isError;
+        }
+    </script>
+
 </head>
 <body>
 
@@ -14,7 +41,7 @@
     <h1>Форма добавления пользователя</h1>
 </div>
 <div class="container">
-    <form class="form-horizontal" action="/action_page.php">
+    <form class="form-horizontal" action="">
         <div class="form-group">
             <label class="control-label col-sm-2" for="name">Имя:</label>
             <div class="col-sm-10">
@@ -28,8 +55,8 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="radio">Пол:</label>
-                <div class="radio" id = "radio">
+            <label class="control-label col-sm-2" for="radios">Пол:</label>
+                <div class="radio" id = "radios">
                     <label><input type="radio" name="sex" value="male">мужской</label>
                     <label><input type="radio" name="sex" value="female">женский</label>
                 </div>
@@ -37,16 +64,14 @@
         <div class="form-group">
             <label class="control-label col-sm-2" for="text">Описание:</label>
             <div class="col-sm-10">
-                <textarea name = "text" class="form-control" id="text">
-                </textarea>
+                <textarea name = "text" class="form-control" id="text"></textarea>
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">Submit</button>
+                <button type="submit" class="btn btn-default" onclick="return validate()">Submit</button>
             </div>
         </div>
-
     </form>
 </div>
 
