@@ -1,6 +1,8 @@
 package ru.job4j.crudservlet;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.postgresql.Driver;
 
 import java.sql.*;
@@ -12,19 +14,21 @@ import java.util.List;
  */
 public class DbStore implements Store {
     private static final BasicDataSource SOURCE = new BasicDataSource();
-    private static DbStore instance = new DbStore();
+    private static final DbStore INSTANCE = new DbStore();
+    private static final Logger LOGGER = LogManager.getLogger(DbStore.class);
 
     private DbStore() {
+        ProperstiesStore.loadProps("/home/alexander/projects/job4j/chapter_008/src/main/resources/app.poperties");
         SOURCE.setDriver(new Driver());
-        SOURCE.setUrl("jdbc:postgresql://127.0.0.1:5432/sqlparcer");
-        SOURCE.setUsername("postgres");
-        SOURCE.setPassword("123456");
+        SOURCE.setUrl(ProperstiesStore.getDbUrl());
+        SOURCE.setUsername(ProperstiesStore.getUser());
+        SOURCE.setPassword(ProperstiesStore.getPass());
         SOURCE.setMinIdle(5);
         SOURCE.setMaxIdle(10);
         SOURCE.setMaxOpenPreparedStatements(100);    }
 
     public static DbStore getInstance() {
-        return instance;
+        return INSTANCE;
     }
 
     /**
@@ -46,6 +50,7 @@ public class DbStore implements Store {
             st.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
             st.executeUpdate();
         } catch (Exception e) {
+            LOGGER.error(e);
             e.printStackTrace();
         }
     }
@@ -70,6 +75,7 @@ public class DbStore implements Store {
             st.setInt(6, id);
             st.executeUpdate();
         } catch (Exception e) {
+            LOGGER.error(e);
             e.printStackTrace();
         }
     }
@@ -88,6 +94,7 @@ public class DbStore implements Store {
             st.setInt(1, id);
             st.executeUpdate();
         } catch (Exception e) {
+            LOGGER.error(e);
             e.printStackTrace();
         }
         return user;
@@ -118,6 +125,7 @@ public class DbStore implements Store {
             }
 
         } catch (Exception e) {
+            LOGGER.error(e);
             e.printStackTrace();
         }
         return result;
@@ -143,6 +151,7 @@ public class DbStore implements Store {
             }
 
         } catch (Exception e) {
+            LOGGER.error(e);
             e.printStackTrace();
         }
         return result;
@@ -170,6 +179,7 @@ public class DbStore implements Store {
                result.add(user);
             }
         } catch (Exception e) {
+            LOGGER.error(e);
             e.printStackTrace();
         }
         return result;
