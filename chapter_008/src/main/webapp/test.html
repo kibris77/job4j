@@ -33,24 +33,50 @@
             return !isError;
         }
 
-        function addRow() {
+        function addTable() {
             if (validate()) {
                 var name = $("#name").val();
                 var surname = $("#surname").val();
                 var sex = $("input[name= 'sex']")[0].checked?$("input[name= 'sex']")[0].value:$("input[name= 'sex']")[1].value;
                 var description = $("#text").val();
-                $('#table tr:last').after('<tr><td>' + name +'</td>');
-                $('#table td:last').after('<td>' + surname +'</td>');
-                $('#table td:last').after('<td>' + sex +'</td>');
-                $('#table td:last').after('<td>' + description +'</td></tr>');
+                var jsondata = '{"name":"' + name + '","surname":"' + surname + '","sex":"' + sex + '","description":"' + description +'"}';
+                drawTable(jsondata);
                 return false;
             }
         }
-    </script>
 
+        function drawTable(jsondata) {
+            $.ajax({
+                url: 'http://localhost:8082/test',
+                type: 'post',
+                data: jsondata,
+                dataType: 'json',
+                complete: function(json) {
+                    var arr = JSON.parse(json.responseText);
+                    $('#table').empty();
+                    $('#table').append('<tr>\n' +
+                        '            <th>Имя</th>\n' +
+                        '            <th>Фамилия</th>\n' +
+                        '            <th>Пол</th>\n' +
+                        '            <th>Описание</th>\n' +
+                        '        </tr>');
+                    for (var key in arr) {
+                        $('#table tr:last').after('<tr><td>' + arr[key].name +'</td>');
+                        $('#table td:last').after('<td>' + arr[key].surname +'</td>');
+                        $('#table td:last').after('<td>' + arr[key].sex +'</td>');
+                        $('#table td:last').after('<td>' + arr[key].description +'</td></tr>');
+                    }
+                }
+            });
+        }
+    </script>
 </head>
 <body>
-
+<script>
+    $(window).on("load",function() {
+        drawTable('{}')
+    });
+</script>
 <div class="container">
     <h1>Форма добавления пользователя</h1>
 </div>
@@ -83,7 +109,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default" onclick="return addRow()">Submit</button>
+                <button type="submit" class="btn btn-default" onclick="return addTable()">Submit</button>
             </div>
         </div>
     </form>
