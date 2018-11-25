@@ -50,6 +50,7 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        req.setCharacterEncoding("UTF-8");
         dispatch.get(req.getParameter("action")).apply(req);
         resp.sendRedirect(req.getContextPath() + "/");
     }
@@ -64,7 +65,9 @@ public class UserServlet extends HttpServlet {
                 String email = reqest.getParameter("email");
                 String password = reqest.getParameter("password");
                 String role = reqest.getParameter("role");
-                validateService.add(id, name, login, email, password, role);
+                String country = reqest.getParameter("country");
+                String city = reqest.getParameter("city");
+                validateService.add(id, name, login, email, password, role, country, city);
                 result = "Данные обновлены";
             } catch (WrongDataException e) {
                 result = e.getMessage();
@@ -82,7 +85,9 @@ public class UserServlet extends HttpServlet {
                 String login = reqest.getParameter("login");
                 String email = reqest.getParameter("email");
                 String role = reqest.getParameter("role");
-                validateService.update(id, name, login, email, null, role);
+                String country = reqest.getParameter("country");
+                String city = reqest.getParameter("city");
+                validateService.update(id, name, login, email, null, role, country, city);
                 result = "Данные обновлены";
             } catch (WrongDataException e) {
                 result = e.getMessage();

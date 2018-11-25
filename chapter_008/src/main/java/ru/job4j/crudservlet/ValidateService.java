@@ -23,15 +23,18 @@ public class ValidateService implements Validate {
      * @param name - имя пользователя
      * @param login - логин пользователя.
      * @param email - почта пользователя.
+     * @param role - роль пользователя.
+     * @param country - страна пользователя.
+     * @param city - город пользователя.
      * @return - boolean.
      * @throws WrongDataException - исключение при неправилном вводе данных.
      */
-    public boolean add(String id, String name, String login, String email, String password, String role) throws WrongDataException {
+    public boolean add(String id, String name, String login, String email, String password, String role, String country, String city) throws WrongDataException {
         boolean result = false;
-        checkData(id, name, login, email, password, role);
+        checkData(id, name, login, email, password, role, country, city);
         int userId = checkId(id, true);
         if (memoryStore.findById(userId) == null) {
-            memoryStore.add(new User(userId, name, login, email, password, role, System.currentTimeMillis()));
+            memoryStore.add(new User(userId, name, login, email, password, role, System.currentTimeMillis(), country, city));
             result = true;
         }
         return result;
@@ -43,15 +46,17 @@ public class ValidateService implements Validate {
      * @param name - имя пользователя
      * @param login - логин пользователя.
      * @param email - почта пользователя.
-     * @return - boolean.
+     * @param role - роль пользователя.
+     * @param country - страна пользователя.
+     * @param city - город пользователя.     * @return - boolean.
      * @throws WrongDataException - исключение при неправилном вводе данных.
      */
-    public boolean update(String id, String name, String login, String email, String password, String role) throws WrongDataException {
+    public boolean update(String id, String name, String login, String email, String password, String role, String country, String city) throws WrongDataException {
         boolean result = false;
-        checkData(id, name, login, email, password, role);
+        checkData(id, name, login, email, password, role, country, city);
         int userId = Integer.parseInt(id);
         if (memoryStore.findById(userId) != null) {
-            memoryStore.update(userId, new User(userId, name, login, email, password, role, System.currentTimeMillis()));
+            memoryStore.update(userId, new User(userId, name, login, email, password, role, System.currentTimeMillis(), country, city));
             result = true;
         }
         return result;
@@ -92,18 +97,21 @@ public class ValidateService implements Validate {
         return memoryStore.findAll();
     }
 
+
     /**
      * Метод проверяет данные на Null.
      * @param id - id пользователя.
      * @param name - имя пользователя
      * @param login - логин пользователя.
      * @param email - почта пользователя.
-     * @return - boolean.
+     * @param role - роль пользователя.
+     * @param country - страна пользователя.
+     * @param city - город пользователя.     * @return - boolean.
      * @throws WrongDataException - исключение при неправилном вводе данных.
      */
-    private void checkData(String id, String name, String login, String email, String password, String role) throws WrongDataException {
+    private void checkData(String id, String name, String login, String email, String password, String role, String country, String city) throws WrongDataException {
         if (id.equals("") || name.equals("") || login.equals("") || email.equals("")
-                || role.equals("") || (password != null && password.equals(""))) {
+                || role.equals("") || country.equals("") || city.equals("") || (password != null && password.equals(""))) {
             throw new WrongDataException("Введены неверные данные");
         }
     }
@@ -127,13 +135,24 @@ public class ValidateService implements Validate {
         return userId;
     }
 
+    /**
+     * Метод возвращет пользователя по логину.
+     * @param login - логин пользователя.
+     * @return User.
+     */
     public User findByLogin(String login) {
         return memoryStore.findByLogin(login);
     }
 
+    /**
+     * Метод провереят на совпаднеие логина и пароляпользователя.
+     * @param login - логин пользователя.
+     * @param password - пароль пользователя.
+     * @return boolean.
+     */
     public boolean isAuthorized(String login, String password) {
         boolean result = false;
-        User user = null;
+        User user;
         user = findByLogin(login);
         if (user != null && user.getPassword().equals(password)) {
             result = true;

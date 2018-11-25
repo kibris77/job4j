@@ -38,8 +38,9 @@ public class DbStore implements Store {
     @Override
     public void add(User user) {
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement st = connection.prepareStatement("INSERT INTO servlet(id, name, login, email, password, role, data) "
-                     + "VALUES (?, ?, ?, ?, ?, ?, ?);")
+             PreparedStatement st = connection.prepareStatement("INSERT INTO servlet(id, name, login, email, "
+                     + "password, role, data, country, city) "
+                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);")
         ) {
             st.setInt(1, user.getId());
             st.setString(2, user.getName());
@@ -48,6 +49,8 @@ public class DbStore implements Store {
             st.setString(5, user.getPassword());
             st.setString(6, user.getRole());
             st.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
+            st.setString(8, user.getCountry());
+            st.setString(9, user.getCity());
             st.executeUpdate();
         } catch (Exception e) {
             LOGGER.error(e);
@@ -64,7 +67,7 @@ public class DbStore implements Store {
     public void update(int id, User user) {
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement st = connection.prepareStatement("UPDATE servlet "
-                     + "SET name = ?, login = ?, email=?, data = ?, role = ? "
+                     + "SET name = ?, login = ?, email=?, data = ?, role = ?, country = ?, city = ?"
                      + "WHERE id = ?")
         ) {
             st.setString(1, user.getName());
@@ -72,7 +75,9 @@ public class DbStore implements Store {
             st.setString(3, user.getEmail());
             st.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
             st.setString(5, user.getRole());
-            st.setInt(6, id);
+            st.setString(6, user.getCountry());
+            st.setString(7, user.getCity());
+            st.setInt(8, id);
             st.executeUpdate();
         } catch (Exception e) {
             LOGGER.error(e);
@@ -110,7 +115,7 @@ public class DbStore implements Store {
         User result = null;
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement st = connection.prepareStatement("SELECT id, name, login, "
-                     + "email, password, role, data FROM servlet WHERE id = ?")
+                     + "email, password, role, data, country, city FROM servlet WHERE id = ?")
         ) {
             st.setInt(1, id);
             ResultSet set = st.executeQuery();
@@ -121,7 +126,9 @@ public class DbStore implements Store {
                         set.getString("email"),
                         set.getString("password"),
                         set.getString("role"),
-                        set.getTimestamp("data").getTime());
+                        set.getTimestamp("data").getTime(),
+                        set.getString("country"),
+                        set.getString("city"));
             }
 
         } catch (Exception e) {
@@ -136,7 +143,7 @@ public class DbStore implements Store {
         User result = null;
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement st = connection.prepareStatement("SELECT id, name, login, "
-                     + "email, password, role, data FROM servlet WHERE login = ?")
+                     + "email, password, role, data, country, city FROM servlet WHERE login = ?")
         ) {
             st.setString(1, login);
             ResultSet set = st.executeQuery();
@@ -147,7 +154,9 @@ public class DbStore implements Store {
                         set.getString("email"),
                         set.getString("password"),
                         set.getString("role"),
-                        set.getTimestamp("data").getTime());
+                        set.getTimestamp("data").getTime(),
+                        set.getString("country"),
+                        set.getString("city"));
             }
 
         } catch (Exception e) {
@@ -166,7 +175,7 @@ public class DbStore implements Store {
         List<User> result = new ArrayList<>();
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement st = connection.prepareStatement("SELECT id, name, login, email, "
-                     + "password, role, data FROM servlet ORDER BY id")) {
+                     + "password, role, data, country, city FROM servlet ORDER BY id")) {
             ResultSet set = st.executeQuery();
             while (set.next()) {
                User user = new User(set.getInt("id"),
@@ -175,7 +184,9 @@ public class DbStore implements Store {
                        set.getString("email"),
                        set.getString("password"),
                        set.getString("role"),
-                       set.getTimestamp("data").getTime());
+                       set.getTimestamp("data").getTime(),
+                       set.getString("country"),
+                       set.getString("city"));
                result.add(user);
             }
         } catch (Exception e) {

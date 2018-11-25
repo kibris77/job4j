@@ -69,12 +69,23 @@
                 }
             });
         }
+
+        function selectInput() {
+            $('#radios').find('input').each(
+                function() {
+                    if($(this).val() == "Мужской"){
+                        $(this).prop("checked", true);
+                    }
+                }
+            )
+        }
     </script>
 </head>
 <body>
 <script>
     $(window).on("load",function() {
-        drawTable('{}')
+        drawTable('{}');
+        selectInput();
     });
 </script>
 <div class="container">

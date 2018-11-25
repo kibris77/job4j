@@ -13,6 +13,8 @@ public class User {
     private String password;
     private String role;
     private long date;
+    private String country;
+    private String city;
 
     public User(int id, String name, String login, String email, String password, String role, long date) {
         this.id = id;
@@ -22,6 +24,18 @@ public class User {
         this.password = password;
         this.role = role;
         this.date = date;
+    }
+
+    public User(int id, String name, String login, String email, String password, String role, long date, String country, String city) {
+        this.id = id;
+        this.name = name;
+        this.login = login;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.date = date;
+        this.country = country;
+        this.city = city;
     }
 
     public int getId() {
@@ -52,6 +66,14 @@ public class User {
         return date;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -80,6 +102,14 @@ public class User {
         this.date = date;
     }
 
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -93,12 +123,13 @@ public class User {
                 && Objects.equals(name, user.name)
                 && Objects.equals(login, user.login)
                 && Objects.equals(email, user.email)
-                && Objects.equals(password, user.password)
-                && Objects.equals(role, user.role);
+                && Objects.equals(role, user.role)
+                && Objects.equals(country, user.country)
+                && Objects.equals(city, user.city);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, login, email, password, role);
+        return Objects.hash(id, name, login, email, role, country, city);
     }
 }

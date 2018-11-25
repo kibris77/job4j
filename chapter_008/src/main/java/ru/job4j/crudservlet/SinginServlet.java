@@ -25,6 +25,7 @@ public class SinginServlet extends HttpServlet {
             req.getSession().setAttribute("id", user.getId());
             resp.sendRedirect(req.getContextPath() + "/");
         } else {
+            req.setAttribute("wronglogin", 1);
             doGet(req, resp);
         }
     }

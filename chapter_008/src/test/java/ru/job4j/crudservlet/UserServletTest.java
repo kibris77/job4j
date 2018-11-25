@@ -35,6 +35,8 @@ public class UserServletTest {
         when(req.getParameter("email")).thenReturn("alex");
         when(req.getParameter("password")).thenReturn("123");
         when(req.getParameter("role")).thenReturn("user");
+        when(req.getParameter("country")).thenReturn("user");
+        when(req.getParameter("city")).thenReturn("user");
 
         new UserServlet().doPost(req, resp);
         assertThat(validate.findAll().iterator().next().getName(), is("alex"));
@@ -54,6 +56,8 @@ public class UserServletTest {
         when(req.getParameter("email")).thenReturn("ivan");
         when(req.getParameter("password")).thenReturn("12345");
         when(req.getParameter("role")).thenReturn("user");
+        when(req.getParameter("country")).thenReturn("user");
+        when(req.getParameter("city")).thenReturn("user");
         new UserServlet().doPost(req, resp);
         assertThat(validate.findAll().iterator().next().getName(), is("ivan123"));
     }
