@@ -1,5 +1,7 @@
 package ru.job4j.crudservlet;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,28 +27,16 @@ public class CityServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String country = req.getParameter("country");
-        StringBuilder json = new StringBuilder();
-        json.append("{\"cities\":[\"");
         System.out.println(country);
+        ObjectMapper objectMapper = new ObjectMapper();
         String[] array = cities.get(country);
-        if (array != null) {
-            for (int i = 0; i < array.length; i++) {
-                json.append(array[i]);
-                if (i != array.length - 1) {
-                    json.append("\",\"");
-                } else {
-                    json.append("\"]}");
-                }
-            }
-        } else {
-            json.append("\"]}");
-        }
-        System.out.println(json.toString());
+        String jsonOut = objectMapper.writeValueAsString(array);
+        System.out.println(jsonOut);
         resp.setContentType("application/json");
         resp.addHeader("access-control-allow-origin", "*");
         resp.setCharacterEncoding("UTF-8");
         PrintWriter writer = resp.getWriter();
-        writer.append(json);
+        writer.append(jsonOut);
         writer.flush();
     }
 }

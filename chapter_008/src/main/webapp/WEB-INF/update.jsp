@@ -52,11 +52,11 @@
                 complete: function(json) {
                     var arr = JSON.parse(json.responseText);
                     $('#exampleCITY').empty();
-                    for (var i = 0; i < arr["cities"].length; ++i) {
-                        if(arr["cities"][i] == '${user.city}') {
-                            $('#exampleCITY').append('<option selected value="' + arr["cities"][i] + '">' + arr["cities"][i] + '</option>');
+                    for (var i = 0; i < arr.length; ++i) {
+                        if(arr[i] == '${user.city}') {
+                            $('#exampleCITY').append('<option selected value="' + arr[i] + '">' + arr[i] + '</option>');
                         } else {
-                            $('#exampleCITY').append('<option value="' + arr["cities"][i] + '">' + arr["cities"][i] + '</option>');
+                            $('#exampleCITY').append('<option value="' + arr[i] + '">' + arr[i] + '</option>');
                         }
                     }
                 }
